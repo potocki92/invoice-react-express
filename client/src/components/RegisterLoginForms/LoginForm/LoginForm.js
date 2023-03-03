@@ -16,7 +16,7 @@ const LoginForm = ({ setShowRegister, setLoginUser }) => {
   const onSubmit = async (e) => {
     e.preventDefault();
     console.log("Successfully Logged In");
-    axios.post("http://localhost:3001/login", formData).then((res) => {
+    axios.post("/login", formData).then((res) => {
       // alert(res.data.message);
       setLoginUser(res.data.user);
     });
