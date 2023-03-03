@@ -5,10 +5,10 @@ import Authentication from "./components/RegisterLoginForms/Authentication";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { useState } from "react";
 import { Home } from "./pages/Home";
-import InvoiceDetails from "./pages/invoices/[invoiceid]";
 import Products from "./pages/products/Products";
 import Client from "./pages/clients/Client";
-import AddInvoice from "./pages/invoices/add/Invoice";
+import User from "./pages/user/User";
+import Invoices from "./pages/invoices/Invoice";
 
 function App() {
   const [user, setLoginUser] = useState({});
@@ -23,17 +23,17 @@ function App() {
             path={user && user._id ? `/:id` : "/"}
             element={
               user && user._id ? (
-                <Homepage setLoginUser={setLoginUser} user={user._id} />
+                <Homepage setLoginUser={setLoginUser} user={user} />
               ) : (
                 <Authentication setLoginUser={setLoginUser} />
               )
             }
           >
             <Route path={`/:id`} element={<Home />}></Route>
-            <Route path={`/:id/invoice`} element={<AddInvoice />} />
+            <Route path={`/:id/invoice`} element={<Invoices />}></Route>
+            <Route path={`/:id/user`} element={<User />}></Route>
             <Route path={`/:id/products`} element={<Products />} />
             <Route path={`/:id/clients`} element={<Client />} />
-            <Route path={`/:id/invoicee`} element={<InvoiceDetails />} />
           </Route>
         </Routes>
       </Router>

@@ -1,18 +1,15 @@
-
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 
 export const Home = () => {
   let { id } = useParams();
-  
-  const [allInvoice, setAllInvoice] = useState();
+  const [allInvoice, setAllInvoice] = useState([]);
 
   useEffect(() => {
     const fetchInvoices = async () => {
       try {
-        const response = await axios.get(`/${id}/invoice`);
-        console.log("Invoice");
+        const response = await axios.get(`/${id}/invoices`);
         setAllInvoice(response.data);
       } catch (error) {
         console.error(error);
@@ -21,6 +18,7 @@ export const Home = () => {
     fetchInvoices();
   }, [id]);
 
+  console.log(allInvoice);
   return (
     <main div className="main__container">
       <div className="invoice__home">
@@ -38,32 +36,6 @@ export const Home = () => {
           <button className="button">Clients</button>
         </Link>
       </div>
-      <Link to={"invoicee"}>
-        <div className="invoice__container">
-          {/* Invoice item */}
-          <div className="invoice__item">
-            <div>
-              <h5 className="invoice__id">RTRRD</h5>
-            </div>
-
-            <div>
-              <h6 className="invoice__client">Ola Skóra</h6>
-            </div>
-
-            <div>
-              <p className="paragraph invoice__created">02-02-2023</p>
-            </div>
-
-            <div>
-              <h3 className="invoice__total">0</h3>
-            </div>
-
-            <div>
-              <button className="button pending__status">pending</button>
-            </div>
-          </div>
-        </div>
-      </Link>
     </main>
   );
 };

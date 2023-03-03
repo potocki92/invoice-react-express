@@ -1,5 +1,10 @@
 import express from "express";
-import { loginUser, registerUser } from "./controllers/userController.js";
+import {
+  getUser,
+  loginUser,
+  putUser,
+  registerUser,
+} from "./controllers/userController.js";
 import {
   addProduct,
   getProducts,
@@ -10,7 +15,11 @@ import {
   deleteClient,
   getClients,
 } from "./controllers/clientController.js";
-import { addInvoice, getInvoices } from "./controllers/invoiceController.js";
+import {
+  addInvoice,
+  deleteInvoice,
+  getInvoice,
+} from "./controllers/invoiceController.js";
 const router = express.Router();
 
 /* 
@@ -51,5 +60,17 @@ INVOICES
 // POST
 router.post("/:id/addInvoice", addInvoice);
 // GET
-router.get("/:id/invoice", getInvoices);
+router.get("/:id/invoices", getInvoice);
+// DELETE
+router.delete("/:id/invoices/:invoiceId", deleteInvoice);
+
+/*
+USER
+*/
+
+// GET
+router.get("/:id/user", getUser);
+
+router.put("/:id/user", putUser);
+
 export default router;

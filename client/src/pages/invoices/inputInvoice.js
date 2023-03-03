@@ -2,7 +2,7 @@ export const invoiceFormFields = [
   {
     inputName: "Invoice",
     type: "text",
-    name: "invoiceNumber",
+    name: "invoiceName",
     placeholder: "Enter invoice name",
   },
 ];
