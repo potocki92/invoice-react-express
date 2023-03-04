@@ -17,7 +17,7 @@ const Register = ({ setShowRegister }) => {
     e.preventDefault();
     const { name, email, password } = formData;
     if (name && email && password) {
-      axios.post("http://localhost:3001/register", formData).then((res) => {
+      axios.post("/register", formData).then((res) => {
         console.log("Successfully Registered");
         alert(res.data.message);
         setShowRegister(false);
