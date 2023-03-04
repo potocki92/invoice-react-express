@@ -36,10 +36,9 @@ const User = () => {
     fetchUser();
   }, [id]);
 
-  console.log(name, email, NIP, REGON, phone, city, postalCode, street);
   const handleClick = async () => {
     try {
-      const response = await axios.put(`/${id}/user`, {
+      const updatedUser = {
         name,
         email,
         password,
@@ -51,8 +50,16 @@ const User = () => {
           postalCode,
           street,
         },
-      });
+      };
+      console.log(updatedUser);
+      const response = await axios.put(`/${id}/user`, updatedUser);
       console.log("User updated successfully:", response.data);
+      const userToSave = {
+        _id: id,
+        user: updatedUser,
+      };
+
+      localStorage.setItem("user", JSON.stringify(userToSave));
     } catch (error) {
       console.error(error);
     }

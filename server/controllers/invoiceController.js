@@ -40,7 +40,6 @@ export const getInvoice = async (req, res) => {
 export const deleteInvoice = async (req, res) => {
   const userId = req.params.id;
   const invoiceId = req.params.invoiceId;
-  console.log(invoiceId);
   try {
     const result = await User.updateOne(
       { _id: userId },

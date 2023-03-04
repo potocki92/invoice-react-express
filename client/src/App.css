@@ -139,8 +139,6 @@ img {
 }
 
 .details__box {
-  display: flex;
-  justify-content: space-between;
   margin-bottom: 1.9rem;
 }
 
@@ -217,7 +215,7 @@ img {
   cursor: pointer;
 }
 .form__group {
-margin-bottom: 1.9rem;
+  margin-bottom: 1.9rem;
 }
 
 .form__group p {
@@ -239,7 +237,7 @@ margin-bottom: 1.9rem;
 }
 
 .bill__title {
-margin-bottom: 20px;
+  margin-bottom: 20px;
 }
 
 .bill__to {

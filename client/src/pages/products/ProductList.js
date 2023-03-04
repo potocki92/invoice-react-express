@@ -16,7 +16,7 @@ export const ProductList = ({ id, products, onDelete }) => {
             </div>
             <div>
               <p>price:</p>
-              {product.price}
+              {product.productsPrice}
             </div>
           </ProductName>
           <button className="button" onClick={() => onDelete(product._id)}>

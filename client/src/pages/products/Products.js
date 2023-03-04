@@ -3,8 +3,6 @@ import { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 import { ProductList } from "./ProductList";
-import { productFormFields } from "./inputProduct";
-import markup from "../../markup/inputs";
 
 const Products = () => {
   let { id } = useParams();
@@ -12,10 +10,14 @@ const Products = () => {
     _id: Types.ObjectId(), // wygeneruj nowe ID
     productsName: "",
     qty: 1,
-    price: 0,
+    productsPrice: 0.0,
   });
-  const [allProducts, setAllProducts] = useState([]);
-
+  const [allProducts, setAllProducts] = useState(
+    JSON.parse(localStorage.getItem("products")) || []
+  );
+  useEffect(() => {
+    localStorage.setItem("products", JSON.stringify(allProducts));
+  }, [allProducts]);
   useEffect(() => {
     const fetchProducts = async () => {
       try {
@@ -33,7 +35,8 @@ const Products = () => {
     setNewProduct({ ...newProduct, [name]: value });
   };
 
-  const handleClick = () => {
+  const handleClick = (e) => {
+    e.preventDefault();
     axios
       .post(`/${id}/addProduct`, newProduct)
       .then((res) => {
@@ -43,7 +46,7 @@ const Products = () => {
           _id: Types.ObjectId(), // wygeneruj nowe ID
           productsName: "",
           qty: 1,
-          price: 0,
+          price: 0.0,
         }); // resetujemy dane dotyczące produktu
       })
       .catch((err) => console.error(err));
@@ -62,20 +65,41 @@ const Products = () => {
   return (
     <div className="main__container">
       <div className="invoice__home-logo">
-        <h1>Invoice</h1>
-        <p>There are total 7 invoices</p>
+        <h1>Products</h1>
+        {allProducts && <p>There are total {allProducts.length} products</p>}
       </div>
       <Link to={`/${id}`}>
         <button className="button back_button">Go Back</button>
       </Link>
 
-      <div className="details__box">
-        {productFormFields.map((item) => markup(item, handleChange))}
-      </div>
+      <form className="details__box" onSubmit={(e) => handleClick(e)}>
+        <div className="form__group">
+          <p>Product Name</p>
+          <input
+            type={"text"}
+            name={"productsName"}
+            value={newProduct.productsName}
+            onChange={handleChange}
+            placeholder={"Product name"}
+            required
+          ></input>
+        </div>
+        <div className="form__group">
+          <p>Price</p>
+          <input
+            type={"number"}
+            name={"productsPrice"}
+            value={newProduct.productsPrice}
+            onChange={handleChange}
+            placeholder={"Product name"}
+            required
+          ></input>
+        </div>
+        <button className="button mark__as-btn" type="submit">
+          Click
+        </button>
+      </form>
 
-      <button className="button mark__as-btn" onClick={handleClick}>
-        Click
-      </button>
       <ProductList id={id} products={allProducts} onDelete={deleteProduct} />
     </div>
   );

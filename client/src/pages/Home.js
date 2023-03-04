@@ -1,30 +1,41 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import axios from "axios";
+import { InvoiceList } from "./invoices/InvoiceList";
 
 export const Home = () => {
   let { id } = useParams();
-  const [allInvoice, setAllInvoice] = useState([]);
+  const [allInvoices, setAllInvoices] = useState([]);
 
   useEffect(() => {
     const fetchInvoices = async () => {
       try {
         const response = await axios.get(`/${id}/invoices`);
-        setAllInvoice(response.data);
+        setAllInvoices(response.data);
       } catch (error) {
         console.error(error);
       }
     };
     fetchInvoices();
   }, [id]);
-
-  console.log(allInvoice);
+  const deleteProduct = (invoiceId) => {
+    axios
+      .delete(`/${id}/invoices/${invoiceId}`)
+      .then((res) => {
+        console.log(res.data);
+        setAllInvoices(
+          allInvoices.filter((product) => product._id !== invoiceId)
+        );
+      })
+      .catch((err) => console.error(err));
+  };
+  console.log(allInvoices);
   return (
     <main div className="main__container">
       <div className="invoice__home">
         <div className="invoice__home-logo">
           <h1>Invoice</h1>
-          {allInvoice && <p>There are total {allInvoice.length} invoices</p>}
+          {allInvoices && <p>There are total {allInvoices.length} invoices</p>}
         </div>
         <Link to={`invoice`}>
           <button className="button">Add Invoice</button>
@@ -36,6 +47,7 @@ export const Home = () => {
           <button className="button">Clients</button>
         </Link>
       </div>
+      <InvoiceList id={id} invoices={allInvoices} onDelete={deleteProduct} />
     </main>
   );
 };

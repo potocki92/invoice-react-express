@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useEffect } from "react";
 import "./App.css";
 import Homepage from "./components/Homepage/Homepage";
 import Authentication from "./components/RegisterLoginForms/Authentication";
@@ -12,8 +12,14 @@ import Invoices from "./pages/invoices/Invoice";
 
 function App() {
   const [user, setLoginUser] = useState({});
-  localStorage.setItem("user", JSON.stringify(user));
-
+  useEffect(() => {
+    // Zapisanie danych użytkownika do localStorage po zalogowaniu
+    const userToSave = {
+      _id: user._id,
+      user: user.user,
+    };
+    localStorage.setItem("user", JSON.stringify(userToSave));
+  }, [user]);
   return (
     <div className="App is-flex">
       <Router>
