@@ -8,7 +8,19 @@ export const InvoiceList = ({ id, invoices, onDelete }) => {
           <ProductName>
             <div>
               <p>Invoice:</p>
-              {invoice.invoiceName}
+              {invoice.invoiceNumber}
+            </div>
+            <div>
+              <p>Client:</p>
+              {invoice.client.clientName}
+            </div>
+            <div>
+              <p>Invoice Date:</p>
+              {invoice.date.invoiceDate}
+            </div>
+            <div>
+              <p>Invoice Due:</p>
+              {invoice.date.dueDate}
             </div>
           </ProductName>
           <button className="button" onClick={() => onDelete(invoice._id)}>
