@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { Container, CardWrapper, ProductName } from "./InvoiceList.styled";
 
 export const InvoiceList = ({ id, invoices, onDelete }) => {
@@ -23,6 +24,9 @@ export const InvoiceList = ({ id, invoices, onDelete }) => {
               {invoice.date.dueDate}
             </div>
           </ProductName>
+          <Link to={`/${id}/invoice/${invoice._id}`}>
+            <button className="button">Edit</button>
+          </Link>
           <button className="button" onClick={() => onDelete(invoice._id)}>
             Delete
           </button>

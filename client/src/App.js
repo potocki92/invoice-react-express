@@ -9,6 +9,7 @@ import Products from "./pages/products/Products";
 import Client from "./pages/clients/Client";
 import User from "./pages/user/User";
 import Invoices from "./pages/invoices/Invoice";
+import InvoiceEdit from "./pages/invoices/edit/InvoiceEdit";
 
 function App() {
   const [user, setLoginUser] = useState({});
@@ -37,6 +38,10 @@ function App() {
           >
             <Route path={`/:id`} element={<Home />}></Route>
             <Route path={`/:id/invoice`} element={<Invoices />}></Route>
+            <Route
+              path={`/:id/invoice/:invoiceId`}
+              element={<InvoiceEdit />}
+            ></Route>
             <Route path={`/:id/user`} element={<User />}></Route>
             <Route path={`/:id/products`} element={<Products />} />
             <Route path={`/:id/clients`} element={<Client />} />

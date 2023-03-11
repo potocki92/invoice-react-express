@@ -18,6 +18,7 @@ import {
 import {
   addInvoice,
   deleteInvoice,
+  getEditInvoice,
   getInvoice,
 } from "./controllers/invoiceController.js";
 const router = express.Router();
@@ -61,6 +62,8 @@ INVOICES
 router.post("/:id/addInvoice", addInvoice);
 // GET
 router.get("/:id/invoices", getInvoice);
+// GET
+router.get("/:id/invoice/:invoiceId", getEditInvoice);
 // DELETE
 router.delete("/:id/invoices/:invoiceId", deleteInvoice);
 

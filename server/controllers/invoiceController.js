@@ -36,6 +36,27 @@ export const getInvoice = async (req, res) => {
   }
 };
 
+// GET
+export const getEditInvoice = async (req, res) => {
+  const userId = req.params.id;
+  const invoiceId = req.params.invoiceId;
+  try {
+    const user = await User.findById(
+      { _id: userId },
+      { invoices: { $elemMatch: { _id: invoiceId } } }
+    );
+    if (!user) {
+      res.status(404).send("Invoice not found");
+      return;
+    }
+    const invoice = user.invoices[0];
+    res.json(invoice);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Internal server error");
+  }
+};
+
 // DELETE
 export const deleteInvoice = async (req, res) => {
   const userId = req.params.id;
