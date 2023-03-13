@@ -11,7 +11,7 @@ const Invoices = () => {
     _id: Types.ObjectId(),
     invoiceNumber: "",
     client: {},
-    product: {},
+    products: [],
     date: { dueDate: "", invoiceDate: "" },
   });
   const [currentMonthInvoices, setCurrentMonthInvoices] = useState(0);
@@ -27,7 +27,7 @@ const Invoices = () => {
     if (
       newInvoice.invoiceNumber === "" ||
       Object.keys(newInvoice.client).length === 0 ||
-      Object.keys(newInvoice.product).length === 0 ||
+      newInvoice.products.length === 0 ||
       Object.keys(newInvoice.date).length === 0
     ) {
       return false;
@@ -96,11 +96,14 @@ const Invoices = () => {
     setSelectedProduct(product);
     setNewInvoice({
       ...newInvoice,
-      product: {
-        productsName: product.productsName,
-        productsQty: product.qty,
-        productsPrice: product.productsPrice,
-      },
+      products: [
+        ...newInvoice.products,
+        {
+          productsName: product.productsName,
+          productsQty: product.qty,
+          productsPrice: product.productsPrice,
+        },
+      ],
     });
   };
 
@@ -124,8 +127,8 @@ const Invoices = () => {
     if (name.includes("product")) {
       setNewInvoice({
         ...newInvoice,
-        product: {
-          ...newInvoice.product,
+        products: {
+          ...newInvoice.products,
           [name]: value,
         },
       });
@@ -170,11 +173,7 @@ const Invoices = () => {
               clientPostal: "",
               clientAddress: "",
             },
-            product: {
-              productsName: "",
-              productsQty: 1,
-              productsPrice: 0.0,
-            },
+            products: [],
             date: {
               dueDate: "",
               invoiceDate: "",
@@ -188,6 +187,15 @@ const Invoices = () => {
     }
   };
 
+  // Remove products from invoices
+  const handleRemoveProduct = (index) => {
+    const updateProducts = [...newInvoice.products];
+    updateProducts.splice(index, 1);
+    setNewInvoice({
+      ...newInvoice,
+      products: updateProducts,
+    });
+  };
   useEffect(() => {
     setIsFormValid(validateForm());
   }, [newInvoice]);
@@ -324,38 +332,44 @@ const Invoices = () => {
           <div>------</div>
         )}
       </div>
-      <div className="details__box">
-        <div className="form__group">
-          <label htmlFor="productsName">Product name:</label>
-          <input
-            type={"text"}
-            id="productsName"
-            name="productsName"
-            value={newInvoice.product.productsName}
-            onChange={handleChange}
-          />
+      {newInvoice.products.map((product, index) => (
+        <div className="details__box" key={index}>
+          {console.log(product, index)}
+          <div className="form__group">
+            <label htmlFor="productsName">Product name:</label>
+            <input
+              type={"text"}
+              id="productsName"
+              name="productsName"
+              value={product.productsName}
+              onChange={handleChange}
+            />
+          </div>
+          <div className="form__group">
+            <label htmlFor="productsQty">Qty:</label>
+            <input
+              type={"number"}
+              id="productsQty"
+              name="productsQty"
+              value={product.productsQty}
+              onChange={handleChange}
+            />
+          </div>
+          <div className="form__group">
+            <label htmlFor="productsPrice">Price:</label>
+            <input
+              type={"number"}
+              id="productsPrice"
+              name="productsPrice"
+              value={product.productsPrice}
+              onChange={handleChange}
+            />
+          </div>
+          <button className="button" onClick={() => handleRemoveProduct(index)}>
+            Remove
+          </button>
         </div>
-        <div className="form__group">
-          <label htmlFor="productsQty">Qty:</label>
-          <input
-            type={"number"}
-            id="productsQty"
-            name="productsQty"
-            value={newInvoice.product.productsQty}
-            onChange={handleChange}
-          />
-        </div>
-        <div className="form__group">
-          <label htmlFor="productsPrice">Price:</label>
-          <input
-            type={"number"}
-            id="productsPrice"
-            name="productsPrice"
-            value={newInvoice.product.productsPrice}
-            onChange={handleChange}
-          />
-        </div>
-      </div>
+      ))}
       <div className="details__box details__box-wrapper">
         <p>Invoice Details</p>
         <div className="form__group">
@@ -377,9 +391,9 @@ const Invoices = () => {
           />
         </div>
       </div>
-        <button className="button mark__as-btn" onClick={handleClick}>
-          Click
-        </button>
+      <button className="button mark__as-btn" onClick={handleClick}>
+        Click
+      </button>
     </div>
   );
 };

@@ -20,6 +20,7 @@ import {
   deleteInvoice,
   getEditInvoice,
   getInvoice,
+  putInvoice,
 } from "./controllers/invoiceController.js";
 const router = express.Router();
 
@@ -66,7 +67,8 @@ router.get("/:id/invoices", getInvoice);
 router.get("/:id/invoice/:invoiceId", getEditInvoice);
 // DELETE
 router.delete("/:id/invoices/:invoiceId", deleteInvoice);
-
+// PUT
+router.put("/:id/invoice/:invoiceId", putInvoice);
 /*
 USER
 */

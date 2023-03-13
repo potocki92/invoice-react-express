@@ -5,13 +5,25 @@ import { Link, useParams } from "react-router-dom";
 const InvoiceEdit = () => {
   let { id, invoiceId } = useParams();
 
-  const [invoice, setInvoice] = useState({});
+  const [invoice, setInvoice] = useState();
+  // Client from editing invoice
+  const [clientName, setClientName] = useState("");
+  const [clientNip, setClientNip] = useState("");
+  const [clientRegon, setClientRegon] = useState("");
+  const [clientPhone, setClientPhone] = useState("");
+  const [clientEmail, setClientEmail] = useState("");
+  const [clientCity, setClientCity] = useState("");
+  const [clientPostal, setClientPostal] = useState("");
+  const [clientAddress, setClientAddress] = useState("");
+
+  // Products
 
   useEffect(() => {
     const fetchInvoice = async () => {
       try {
         const response = await axios.get(`/${id}/invoice/${invoiceId}`);
         setInvoice(response.data);
+        console.log(response.data);
       } catch (error) {
         console.error(error);
       }
@@ -19,6 +31,23 @@ const InvoiceEdit = () => {
     fetchInvoice();
   }, [id, invoiceId]);
 
+  const handleClick = async () => {
+    try {
+      const response = await axios.put(`/${id}/invoice/${invoiceId}`, invoice);
+      console.log("Invoice updated successfully: ", response);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  // Remove products from invoices
+  const handleRemoveProduct = (index) => {
+    const updateProducts = [...invoice.products];
+    updateProducts.splice(index, 1);
+    setInvoice({
+      ...invoice,
+      products: updateProducts,
+    });
+  };
   if (!invoice) {
     return <div>Loading...</div>;
   }
@@ -137,41 +166,48 @@ const InvoiceEdit = () => {
         </div>
         <div className="details__box details__box-wrapper">
           <h2>Product</h2>
-          <div className="details__box">
-            <div className="form__group">
-              <label htmlFor="productsName">Product name:</label>
-              <input
-                type={"text"}
-                id={"productsName"}
-                name="productsName"
-                value={invoice.product?.productsName}
-              />
+          {invoice.products.map((product, index) => (
+            <div className="details__box" key={index}>
+              <div className="form__group">
+                <label htmlFor="productsName">Product Name:</label>
+                <input
+                  type={"text"}
+                  id="productsName"
+                  name="productsName"
+                  value={product.productsName}
+                />
+              </div>
+              <div className="form__group">
+                <label htmlFor="productsQty">Qty:</label>
+                <input
+                  type={"number"}
+                  id="productsQty"
+                  name="productsQty"
+                  value={product.productsQty}
+                />
+              </div>
+              <div className="form__group">
+                <label htmlFor="productsPrice">Price:</label>
+                <input
+                  type={"number"}
+                  id="productsPrice"
+                  name="productsPrice"
+                  value={product.productsPrice}
+                />
+              </div>
+              <button
+                className="button"
+                onClick={() => handleRemoveProduct(index)}
+              >
+                Remove
+              </button>
             </div>
-          </div>
-          <div className="details__box">
-            <div className="form__group">
-              <label htmlFor="productsQty">Qty:</label>
-              <input
-                type={"number"}
-                id={"productsQty"}
-                name="productsQty"
-                value={invoice.product?.productsQty}
-              />
-            </div>
-          </div>
-          <div className="details__box">
-            <div className="form__group">
-              <label htmlFor="productsPrice">Price:</label>
-              <input
-                type={"number"}
-                id={"productsPrice"}
-                name="productsPrice"
-                value={invoice.product?.productsPrice}
-              />
-            </div>
-          </div>
+          ))}
         </div>
       </div>
+      <button className="button" onClick={handleClick}>
+        Save
+      </button>
     </div>
   );
 };

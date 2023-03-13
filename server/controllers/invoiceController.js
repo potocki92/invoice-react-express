@@ -57,6 +57,25 @@ export const getEditInvoice = async (req, res) => {
   }
 };
 
+// PUT
+export const putInvoice = async (req, res) => {
+  const userId = req.params.id;
+  const invoiceId = req.params.invoiceId;
+  const updateInvoice = { ...req.body };
+  try {
+    const user = await User.updateOne(
+      { _id: userId, "invoices._id": invoiceId },
+      { $set: { "invoices.$": updateInvoice } }
+    );
+    if (user.nModified === 0) {
+      res.status(404).send("User not found");
+    }
+    res.send("Invoice update successfully");
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Internal server error");
+  }
+};
 // DELETE
 export const deleteInvoice = async (req, res) => {
   const userId = req.params.id;
