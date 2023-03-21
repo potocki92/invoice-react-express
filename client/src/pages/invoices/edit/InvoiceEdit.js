@@ -5,33 +5,98 @@ import { Link, useParams } from "react-router-dom";
 const InvoiceEdit = () => {
   let { id, invoiceId } = useParams();
 
-  const [invoice, setInvoice] = useState();
-  // Client from editing invoice
-  const [clientName, setClientName] = useState("");
-  const [clientNip, setClientNip] = useState("");
-  const [clientRegon, setClientRegon] = useState("");
-  const [clientPhone, setClientPhone] = useState("");
-  const [clientEmail, setClientEmail] = useState("");
-  const [clientCity, setClientCity] = useState("");
-  const [clientPostal, setClientPostal] = useState("");
-  const [clientAddress, setClientAddress] = useState("");
+  const [invoice, setInvoice] = useState({
+    date: { dueDate: "", invoiceDate: "" },
+    client: {
+      clientName: "",
+      clientNip: "",
+      clientRegon: "",
+      clientPhone: "",
+      clientEmail: "",
+      clientCity: "",
+      clientPostal: "",
+      clientAddress: "",
+    },
+    products: [],
+  });
+  const [products, setProducts] = useState([]);
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  // Products
-
+  // Load invoice from database
   useEffect(() => {
     const fetchInvoice = async () => {
       try {
         const response = await axios.get(`/${id}/invoice/${invoiceId}`);
         setInvoice(response.data);
-        console.log(response.data);
+        setLoading(false);
       } catch (error) {
         console.error(error);
       }
     };
     fetchInvoice();
   }, [id, invoiceId]);
+  // Load all products to setProducts
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await axios.get(`/${id}/products`);
+        setProducts(response.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchProducts();
+  }, [id]);
 
-  const handleClick = async () => {
+  // Change data from inputs
+  const handleChange = (event, index) => {
+    const { name, value } = event.target;
+    setInvoice((prevInvoice) => ({
+      ...prevInvoice,
+      [name]: value,
+      client: { ...prevInvoice.client, [name]: value },
+      products:
+        index === undefined
+          ? prevInvoice.products
+          : prevInvoice.products.map((product, i) =>
+              i === index ? { ...product, [name]: value } : product
+            ),
+    }));
+  };
+  // Remove products from invoices
+  const handleRemoveProduct = (index) => {
+    setInvoice((prevInvoice) => ({
+      ...prevInvoice,
+      products: prevInvoice.products.filter((_, i) => i !== index),
+    }));
+  };
+  // Handle to product
+  const handleProductChange = (event) => {
+    const productId = event.target.value;
+    const product = products.find((product) => product._id === productId);
+    setSelectedProduct(product);
+  };
+  // Added product when user select from products
+  const handleAddProduct = () => {
+    if (selectedProduct) {
+      setInvoice((prevInvoice) => ({
+        ...prevInvoice,
+        products: [
+          ...prevInvoice.products,
+          {
+            productsName: selectedProduct.productsName,
+            productsQty: 1,
+            productsPrice: selectedProduct.productsPrice,
+          },
+        ],
+      }));
+      setSelectedProduct(null);
+    }
+  };
+  
+  // Save all changed data
+  const handleSave = async () => {
     try {
       const response = await axios.put(`/${id}/invoice/${invoiceId}`, invoice);
       console.log("Invoice updated successfully: ", response);
@@ -39,16 +104,8 @@ const InvoiceEdit = () => {
       console.error(error);
     }
   };
-  // Remove products from invoices
-  const handleRemoveProduct = (index) => {
-    const updateProducts = [...invoice.products];
-    updateProducts.splice(index, 1);
-    setInvoice({
-      ...invoice,
-      products: updateProducts,
-    });
-  };
-  if (!invoice) {
+
+  if (loading) {
     return <div>Loading...</div>;
   }
   return (
@@ -65,12 +122,18 @@ const InvoiceEdit = () => {
           <input
             type="date"
             name="invoiceDate"
-            value={invoice.date?.invoiceDate}
+            value={invoice.date.invoiceDate}
+            onChange={handleChange}
           />
         </div>
         <div className="form__group">
           <p>Due Date</p>
-          <input type="date" name="dueDate" value={invoice.date?.dueDate} />
+          <input
+            type="date"
+            name="dueDate"
+            value={invoice.date.dueDate}
+            onChange={handleChange}
+          />
         </div>
       </div>{" "}
       <div className="details__box details__box-wrapper">
@@ -83,7 +146,8 @@ const InvoiceEdit = () => {
               type={"text"}
               id="clientName"
               name="clientName"
-              value={invoice.client?.clientName}
+              value={invoice.client.clientName}
+              onChange={handleChange}
             />
           </div>
           <div className="details__box">
@@ -93,7 +157,8 @@ const InvoiceEdit = () => {
                 type={"text"}
                 id={"clientNip"}
                 name="clientNip"
-                value={invoice.client?.clientNip}
+                value={invoice.client.clientNip}
+                onChange={handleChange}
               />
             </div>
           </div>
@@ -104,7 +169,8 @@ const InvoiceEdit = () => {
                 type={"text"}
                 id={"clientRegon"}
                 name="clientRegon"
-                value={invoice.client?.clientRegon}
+                value={invoice.client.clientRegon}
+                onChange={handleChange}
               />
             </div>
           </div>
@@ -115,7 +181,8 @@ const InvoiceEdit = () => {
                 type={"email"}
                 id={"clientEmail"}
                 name="clientEmail"
-                value={invoice.client?.clientEmail}
+                value={invoice.client.clientEmail}
+                onChange={handleChange}
               />
             </div>
           </div>
@@ -126,7 +193,8 @@ const InvoiceEdit = () => {
                 type={"tel"}
                 id={"clientPhone"}
                 name="clientPhone"
-                value={invoice.client?.clientPhone}
+                value={invoice.client.clientPhone}
+                onChange={handleChange}
               />
             </div>
           </div>
@@ -137,7 +205,8 @@ const InvoiceEdit = () => {
                 type={"text"}
                 id={"clientCity"}
                 name="clientCity"
-                value={invoice.client?.clientCity}
+                value={invoice.client.clientCity}
+                onChange={handleChange}
               />
             </div>
           </div>
@@ -148,7 +217,8 @@ const InvoiceEdit = () => {
                 type={"text"}
                 id={"clientPostal"}
                 name="clientPostal"
-                value={invoice.client?.clientPostal}
+                value={invoice.client.clientPostal}
+                onChange={handleChange}
               />
             </div>
           </div>
@@ -159,7 +229,8 @@ const InvoiceEdit = () => {
                 type={"text"}
                 id={"clientAddress"}
                 name="clientAddress"
-                value={invoice.client?.clientAddress}
+                value={invoice.client.clientAddress}
+                onChange={handleChange}
               />
             </div>
           </div>
@@ -175,6 +246,7 @@ const InvoiceEdit = () => {
                   id="productsName"
                   name="productsName"
                   value={product.productsName}
+                  onChange={(e) => handleChange(e, index)}
                 />
               </div>
               <div className="form__group">
@@ -184,6 +256,7 @@ const InvoiceEdit = () => {
                   id="productsQty"
                   name="productsQty"
                   value={product.productsQty}
+                  onChange={(e) => handleChange(e, index)}
                 />
               </div>
               <div className="form__group">
@@ -193,6 +266,7 @@ const InvoiceEdit = () => {
                   id="productsPrice"
                   name="productsPrice"
                   value={product.productsPrice}
+                  onChange={(e) => handleChange(e, index)}
                 />
               </div>
               <button
@@ -204,8 +278,24 @@ const InvoiceEdit = () => {
             </div>
           ))}
         </div>
+        <div className="form__group">
+          <label htmlFor="productSelect">Product:</label>
+          <select id="productSelect" onChange={handleProductChange}>
+            <option value="">-- Select a product --</option>
+            {products.map((product) => (
+              <option key={product._id} value={product._id}>
+                {product.productsName}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div className="form__group">
+          <button className="button add_button" onClick={handleAddProduct}>
+            Add Product
+          </button>
+        </div>
       </div>
-      <button className="button" onClick={handleClick}>
+      <button className="button" onClick={handleSave}>
         Save
       </button>
     </div>

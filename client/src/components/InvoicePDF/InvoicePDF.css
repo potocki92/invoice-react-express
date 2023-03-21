@@ -1,0 +1,108 @@
+:root {
+  --background-color: #f2f3f5;
+  --placeholder-color: #aaa;
+
+  --color-dark: #222;
+  --color-dark-2: #666;
+  --color-gray: #e3e3e3;
+  --color-yellow: #fdf4db;
+  --color-cyan: #66afe9;
+  --color-white: #fff;
+  --color-red: #f03434;
+  --color-green: #26a65b;
+  --color-blue: #428bca;
+}
+
+.invoice-wrapper {
+  position: relative;
+  background-color: #fff;
+  padding: 40px 35px;
+  box-shadow: 0 0 17px rgba(16, 40, 73, 0.09);
+  max-width: 700px;
+}
+.input {
+  display: inline-block;
+  width: 98%;
+  height: 30px;
+  padding: 4px 12px 4px 0;
+  margin-bottom: 1px;
+  background: transparent;
+  border: 1px dotted transparent;
+  border-radius: 3px;
+  outline: 0;
+  transition: background 0.1s ease-in-out, border-color 0.2s ease-in-out;
+}
+.flex {
+  display: flex;
+}
+.flex-ai {
+  align-items: center;
+}
+.input[value] {
+  color: #555;
+}
+.input:focus {
+  outline: 1;
+  border: 1px dotted var(--color-cyan);
+  background: #fdf4db;
+}
+.input:hover {
+  background: #fdf4db;
+}
+.flex-end {
+  justify-content: flex-end;
+}
+.w-17 {
+  width: 17%;
+}
+.w-18 {
+  width: 18%;
+}
+.w-48 {
+  width: 48%;
+}
+.w-50 {
+  width: 50%;
+}
+.fs-20 {
+  font-size: 20px;
+}
+.fs-45 {
+  font-size: 45px;
+}
+.bold {
+  font-weight: 800;
+}
+.right {
+  text-align: right;
+}
+.p-10 {
+  padding: 0 0 0 10px;
+}
+.p-4-8 {
+  padding: 4px 8px;
+}
+.p-color {
+  color: var(--placeholder-color);
+}
+.m-t {
+  margin-top: 15px;
+}
+.mt-30 {
+  margin-top: 30px;
+}
+.bg-dark {
+  background-color: #666;
+}
+.span {
+  display: inline-block;
+  width: 98%;
+  padding: 4px 12px 4px 0;
+  margin-bottom: 1px;
+  border: 1px dotted transparent;
+  transition: background 0.1s ease-in-out, border-color 0.2s ease-in-out;
+}
+
+.white {
+  color: #fff;
+}

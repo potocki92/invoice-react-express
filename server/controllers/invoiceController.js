@@ -20,7 +20,6 @@ export const addInvoice = async (req, res) => {
     res.status(500).send("Internal server error");
   }
 };
-
 // GET
 export const getInvoice = async (req, res) => {
   try {
@@ -35,7 +34,6 @@ export const getInvoice = async (req, res) => {
     res.status(500).send("Internal server error");
   }
 };
-
 // GET
 export const getEditInvoice = async (req, res) => {
   const userId = req.params.id;
@@ -56,7 +54,6 @@ export const getEditInvoice = async (req, res) => {
     res.status(500).send("Internal server error");
   }
 };
-
 // PUT
 export const putInvoice = async (req, res) => {
   const userId = req.params.id;

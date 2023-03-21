@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { Container, CardWrapper, ProductName } from "./InvoiceList.styled";
 
 export const InvoiceList = ({ id, invoices, onDelete }) => {
+  
   return (
     <Container>
       {invoices?.map((invoice, index) => (

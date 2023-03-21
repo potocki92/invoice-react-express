@@ -15,6 +15,7 @@
 
 .header .container {
   justify-content: space-between;
+  flex-direction: row;
 }
 .button {
   border-radius: 20px;

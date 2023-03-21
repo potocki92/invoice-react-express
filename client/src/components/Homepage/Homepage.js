@@ -19,7 +19,7 @@ const Homepage = ({ setLoginUser, user }) => {
             <p>Your ID: {user._id}</p>
           </div>
         ) : (
-          <div className="container section is-flex">
+          <div >
             <Outlet />
           </div>
         )}
