@@ -331,6 +331,7 @@ const InvoicePDF = ({
   };
   const handleAddCard = () => {
     setCards([...cards, {}]);
+    setNewInvoice({ ...invoice, products: [...invoice.products, {}] });
   };
 
   return (
@@ -341,7 +342,7 @@ const InvoicePDF = ({
           <p className="fs-20 right">{invoice.invoiceNumber}</p>
           <div className="flex flex-end">
             <p className="">Due Date:</p>
-            <p className="p-10">{invoice.date.invoiceDate}</p>
+            <p className="p-10">{invoice.date.invoiceDate || ""}</p>
           </div>
           <div className="flex flex-end">
             <p className="">Invoice Date:</p>

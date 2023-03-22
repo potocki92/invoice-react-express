@@ -48,7 +48,6 @@ const Invoices = () => {
       try {
         const response = await axios.get(`/${id}/user`);
         setUser(response.data);
-        console.log(user);
         setNewInvoice((prevInvoice) => ({
           ...prevInvoice,
           user: response.data,
@@ -85,7 +84,6 @@ const Invoices = () => {
     fetchProducts();
   }, [id]);
 
-  console.log(newInvoice);
   // Generate Invoice Number INV-MM/YY/NN
   const invoiceNumber = new CurrentMonthInvoices(
     currentMonthInvoices
