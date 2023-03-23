@@ -421,42 +421,49 @@ const InvoicePDF = ({
             className="input"
             placeholder="Client Name"
             value={invoice.client.clientName}
+            onChange={handleChange}
           />
           <input
             type={"tel"}
             className="input"
             placeholder="Client Phone"
             value={invoice.client.clientPhone}
+            onChange={handleChange}
           />
           <input
             type={"email"}
             className="input"
             placeholder="Client Email"
             value={invoice.client.clientEmail}
+            onChange={handleChange}
           />
           <input
             type={"text"}
             className="input"
             placeholder="NIP"
             value={invoice.client.clientNip}
+            onChange={handleChange}
           />
           <input
             type={"text"}
             className="input"
             placeholder="REGON"
             value={invoice.client.clientRegon}
+            onChange={handleChange}
           />
           <input
             type={"text"}
             className="input"
             placeholder="Company's Address"
             value={invoice.client.clientAddress}
+            onChange={handleChange}
           />
           <input
             type={"text"}
             className="input"
             placeholder="City"
             value={`${invoice.client.clientCity}, ${invoice.client.clientPostal}`}
+            onChange={handleChange}
           />
         </div>
       </div>
@@ -490,6 +497,7 @@ const InvoicePDF = ({
           index={index}
           invoice={invoice}
           setNewInvoice={setNewInvoice}
+          handleChange={handleChange}
           selectedProduct={selectedProduct}
           selectedProductIndex={selectedProductIndex}
           products={products}

@@ -221,6 +221,7 @@ const Invoices = () => {
       <InvoicePDF
         invoice={newInvoice}
         setNewInvoice={setNewInvoice}
+        handleChange={handleChange}
         clients={clients}
         products={products}
         selectedClient={selectedClient}
