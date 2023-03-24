@@ -1,10 +1,33 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./ProductCard.css";
 
 const ProductCard = ({ invoice, setNewInvoice, products, index }) => {
   const [selectedProduct, setSelectedProduct] = useState("");
   const [productQty, setProductQty] = useState(1);
   const [productPrice, setProductPrice] = useState(1);
+  const [amount, setAmount] = useState(1);
+
+  const updatedProduct = (key, value) => {
+    const updatedProducts = invoice.products.map((product, i) => {
+      if (i === index) {
+        return {
+          ...product,
+          [key]: value,
+        };
+      }
+      return product;
+    });
+
+    setNewInvoice({ ...invoice, products: updatedProducts });
+  };
+  
+  // Update amount for every change of qty and price
+  useEffect(() => {
+    const updateAmount = productQty * productPrice;
+    setAmount(updateAmount);
+    updatedProduct("amount", updateAmount);
+    console.log(invoice.products[0]);
+  }, [productQty * productPrice]);
 
   const handleProductChange = (event) => {
     const selectedProductId = event.target.value;
@@ -15,6 +38,7 @@ const ProductCard = ({ invoice, setNewInvoice, products, index }) => {
       productsName: selectedProduct.productsName,
       productsQty: selectedProduct.qty,
       productsPrice: selectedProduct.productsPrice,
+      amount: 0,
     });
     // kopia wszystich produktów z invoice
     const updateProduct = [...invoice.products];
@@ -24,6 +48,7 @@ const ProductCard = ({ invoice, setNewInvoice, products, index }) => {
       productsName: selectedProduct.productsName,
       productsQty: selectedProduct.qty,
       productsPrice: selectedProduct.productsPrice,
+      amount: 0,
     };
     // zapisanie zmiany produktu do invoice
     setNewInvoice({ ...invoice, products: updateProduct });
@@ -34,31 +59,11 @@ const ProductCard = ({ invoice, setNewInvoice, products, index }) => {
 
     if (name === "productsQty") {
       setProductQty(value);
-      const updatedProducts = invoice.products.map((product, i) => {
-        if (i === index) {
-          return {
-            ...product,
-            productsQty: value,
-          };
-        }
-        return product;
-      });
-      setNewInvoice({ ...invoice, products: updatedProducts });
-      console.log(invoice.products[index]);
+      updatedProduct("productsQty", value);
     }
     if (name === "productsPrice") {
       setProductPrice(value);
-      const updateProducts = invoice.products.map((product, i) => {
-        if (i === index) {
-          return {
-            ...product,
-            productsPrice: value,
-          };
-        }
-        return product;
-      });
-      setNewInvoice({ ...invoice, products: updateProducts });
-      console.log(updateProducts[index]);
+      updatedProduct("productsPrice", value);
     }
   };
   return (
@@ -104,7 +109,7 @@ const ProductCard = ({ invoice, setNewInvoice, products, index }) => {
         />
       </div>
       <div className="view w-18 p-4-8 pb-10 right">
-        <span className="span dark">{""}</span>
+        <span className="span dark">{amount}</span>
       </div>
       <button className="circle-button" onClick={""}>
         -
@@ -114,21 +119,3 @@ const ProductCard = ({ invoice, setNewInvoice, products, index }) => {
 };
 
 export default ProductCard;
-
-/*
-  TODO:
-
-    const updateProducts = invoice.products.map((product, i) => {
-        if (i === index) {
-          return {
-            ...product,
-            productsPrice: value,
-          };
-        }
-        return product;
-      });
-      setNewInvoice({ ...invoice, products: updateProducts });
-      console.log(updateProducts[index]);
-
-    Wstawić w osobną funkcję i użyć callback w if
-*/

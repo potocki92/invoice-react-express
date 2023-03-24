@@ -340,13 +340,25 @@ const InvoicePDF = ({
         <div className="view w-50">
           <h1 className="fs-45 bold right">INVOICE</h1>
           <p className="fs-20 right">{invoice.invoiceNumber}</p>
-          <div className="flex flex-end">
+          <div className="flex flex-end flex-ai gap-15">
             <p className="">Due Date:</p>
-            <p className="p-10">{invoice.date.invoiceDate || ""}</p>
+            <input
+              type={"date"}
+              name="invoiceDate"
+              className="input input-date w-35"
+              value={invoice.date.invoiceDate || ""}
+              onChange={handleChange}
+            />
           </div>
-          <div className="flex flex-end">
+          <div className="flex flex-end flex-ai gap-15">
             <p className="">Invoice Date:</p>
-            <p className="p-10">{invoice.date.dueDate}</p>
+            <input
+              type={"date"}
+              name="dueDate"
+              className="input input-date w-35 "
+              value={invoice.date.dueDate || ""}
+              onChange={handleChange}
+            />
           </div>
         </div>
       </div>

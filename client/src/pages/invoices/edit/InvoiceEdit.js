@@ -269,6 +269,9 @@ const InvoiceEdit = () => {
                   onChange={(e) => handleChange(e, index)}
                 />
               </div>
+              <div className="form__group">
+                <span>Amount: {product.amount}</span>
+              </div>
               <button
                 className="button"
                 onClick={() => handleRemoveProduct(index)}

@@ -32,11 +32,18 @@
   outline: 0;
   transition: background 0.1s ease-in-out, border-color 0.2s ease-in-out;
 }
+.input-date {
+  border: 1px dotted #999;
+  background: #fdf4db;
+}
 .flex {
   display: flex;
 }
 .flex-ai {
   align-items: center;
+}
+.gap-15 {
+  gap: 15px;
 }
 .input[value] {
   color: #555;
@@ -57,6 +64,9 @@
 }
 .w-18 {
   width: 18%;
+}
+.w-35 {
+  width: 35%;
 }
 .w-48 {
   width: 48%;

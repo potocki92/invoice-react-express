@@ -11,6 +11,7 @@ const Products = () => {
     productsName: "",
     qty: 1,
     productsPrice: 0.0,
+    amount: 0,
   });
   const [allProducts, setAllProducts] = useState(
     JSON.parse(localStorage.getItem("products")) || []
