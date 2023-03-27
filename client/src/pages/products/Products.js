@@ -13,12 +13,15 @@ const Products = () => {
     productsPrice: 0.0,
     amount: 0,
   });
+  
   const [allProducts, setAllProducts] = useState(
     JSON.parse(localStorage.getItem("products")) || []
   );
+
   useEffect(() => {
     localStorage.setItem("products", JSON.stringify(allProducts));
   }, [allProducts]);
+
   useEffect(() => {
     const fetchProducts = async () => {
       try {

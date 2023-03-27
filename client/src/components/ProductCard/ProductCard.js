@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import "./ProductCard.css";
 
-const ProductCard = ({ invoice, setNewInvoice, products, index }) => {
+const ProductCard = ({ invoice, setNewInvoice, products, index, handleRemoveCard }) => {
   const [selectedProduct, setSelectedProduct] = useState("");
   const [productQty, setProductQty] = useState(1);
   const [productPrice, setProductPrice] = useState(1);
@@ -20,6 +20,7 @@ const ProductCard = ({ invoice, setNewInvoice, products, index }) => {
 
     setNewInvoice({ ...invoice, products: updatedProducts });
   };
+
   
   // Update amount for every change of qty and price
   useEffect(() => {
@@ -40,6 +41,8 @@ const ProductCard = ({ invoice, setNewInvoice, products, index }) => {
       productsPrice: selectedProduct.productsPrice,
       amount: 0,
     });
+    setProductPrice(selectedProduct.productsPrice);
+    setProductQty(selectedProduct.qty);
     // kopia wszystich produktów z invoice
     const updateProduct = [...invoice.products];
 
@@ -111,7 +114,7 @@ const ProductCard = ({ invoice, setNewInvoice, products, index }) => {
       <div className="view w-18 p-4-8 pb-10 right">
         <span className="span dark">{amount}</span>
       </div>
-      <button className="circle-button" onClick={""}>
+      <button className="circle-button" onClick={handleRemoveCard}>
         -
       </button>
     </div>

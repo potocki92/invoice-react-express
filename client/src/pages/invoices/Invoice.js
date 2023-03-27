@@ -4,7 +4,6 @@ import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 import CurrentMonthInvoices from "../currentMonthIvoices";
 import InvoicePDF from "../../components/InvoicePDF/InvoicePDF";
-import ProductCard from "../../components/ProductCard/ProductCard";
 
 const Invoices = () => {
   let { id } = useParams();
@@ -12,7 +11,9 @@ const Invoices = () => {
   const [newInvoice, setNewInvoice] = useState({
     _id: Types.ObjectId(),
     invoiceNumber: "",
-    user: { address: {} },
+    user: {
+      address: {},
+    },
     client: {},
     products: [],
     date: { dueDate: "", invoiceDate: "" },
@@ -20,7 +21,6 @@ const Invoices = () => {
   const [user, setUser] = useState({});
   const [currentMonthInvoices, setCurrentMonthInvoices] = useState(0);
   const [allInvoices, setAllInvoices] = useState([]);
-  const [selectedClient, setSelectedClient] = useState("");
   const [selectedProduct, setSelectedProduct] = useState("");
   const [selectedProductIndex, setSelectedProductIndex] = useState(-1);
   const [clients, setClients] = useState([]);
@@ -93,25 +93,6 @@ const Invoices = () => {
     setNewInvoice((prevInvoice) => ({ ...prevInvoice, invoiceNumber }));
   }, [currentMonthInvoices]);
 
-  // Handle to client
-  const handleClientChange = (event) => {
-    const clientId = event.target.value;
-    const client = clients.find((client) => client._id === clientId);
-    setSelectedClient(client);
-    setNewInvoice({
-      ...newInvoice,
-      client: {
-        clientName: client.clientName,
-        clientNip: client.clientNip,
-        clientRegon: client.clientRegon,
-        clientEmail: client.clientEmail,
-        clientPhone: client.clientPhone,
-        clientCity: client.clientCity,
-        clientPostal: client.clientPostal,
-        clientAddress: client.clientAddress,
-      },
-    });
-  };
 
   // Load all invoices to setAllInvoices
   useEffect(() => {
@@ -193,16 +174,6 @@ const Invoices = () => {
     }
   };
 
-  // Remove products from invoices
-  const handleRemoveProduct = (index) => {
-    const updateProducts = [...newInvoice.products];
-    updateProducts.splice(index, 1);
-    setNewInvoice({
-      ...newInvoice,
-      products: updateProducts,
-    });
-  };
-
   useEffect(() => {
     setIsFormValid(validateForm());
   }, [newInvoice]);
@@ -224,15 +195,19 @@ const Invoices = () => {
         handleChange={handleChange}
         clients={clients}
         products={products}
-        selectedClient={selectedClient}
         selectedProduct={selectedProduct}
         selectedProductIndex={selectedProductIndex}
-        handleClientChange={handleClientChange}
       />
 
-      <button className="button mark__as-btn" onClick={handleClick}>
-        Create Invoice
-      </button>
+      <Link
+        to={`/${id}`}
+        // sprawdza czy wszystkie inputy zostały uzupełnione, jeżeli tak to link zadziała 
+        onClick={isFormValid ? null : (e) => e.preventDefault()}
+      >
+        <button className="button mark__as-btn" onClick={handleClick}>
+          Create Invoice
+        </button>
+      </Link>
     </div>
   );
 };
