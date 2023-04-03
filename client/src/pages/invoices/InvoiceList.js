@@ -2,10 +2,11 @@ import { Link } from "react-router-dom";
 import { Container, CardWrapper, ProductName } from "./InvoiceList.styled";
 
 export const InvoiceList = ({ id, invoices, onDelete }) => {
+  const reversedInvoices = [...invoices].reverse();
   
   return (
     <Container>
-      {invoices?.map((invoice, index) => (
+      {reversedInvoices?.map((invoice, index) => (
         <CardWrapper key={index}>
           <ProductName>
             <div>

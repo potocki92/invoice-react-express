@@ -15,7 +15,10 @@ const Invoices = () => {
       address: {},
     },
     client: {},
-    products: [],
+    products: {
+      items: [],
+      totalAmount: 0,
+    },
     date: { dueDate: "", invoiceDate: "" },
   });
   const [user, setUser] = useState({});
@@ -32,7 +35,7 @@ const Invoices = () => {
     if (
       newInvoice.invoiceNumber === "" ||
       Object.keys(newInvoice.client).length === 0 ||
-      newInvoice.products.length === 0 ||
+      newInvoice.products.items.length === 0 ||
       Object.keys(newInvoice.date).length === 0
     ) {
       return false;
@@ -93,7 +96,6 @@ const Invoices = () => {
     setNewInvoice((prevInvoice) => ({ ...prevInvoice, invoiceNumber }));
   }, [currentMonthInvoices]);
 
-
   // Load all invoices to setAllInvoices
   useEffect(() => {
     const fetchInvoices = async () => {
@@ -110,7 +112,6 @@ const Invoices = () => {
 
   const handleChange = (event) => {
     const { name, value } = event.target;
-    console.log(name, event.target.value);
     if (name.includes("product")) {
       setNewInvoice({
         ...newInvoice,
@@ -145,7 +146,6 @@ const Invoices = () => {
       axios
         .post(`/${id}/addInvoice`, { ...newInvoice, invoiceNumber })
         .then((res) => {
-          console.log(res.data);
           setAllInvoices([...allInvoices, newInvoice]); // aktualizujemy stan listy produktów
           setNewInvoice({
             _id: Types.ObjectId(), // wygeneruj nowe ID
@@ -160,7 +160,7 @@ const Invoices = () => {
               clientPostal: "",
               clientAddress: "",
             },
-            products: [],
+            products: {},
             date: {
               dueDate: "",
               invoiceDate: "",
@@ -201,7 +201,7 @@ const Invoices = () => {
 
       <Link
         to={`/${id}`}
-        // sprawdza czy wszystkie inputy zostały uzupełnione, jeżeli tak to link zadziała 
+        // sprawdza czy wszystkie inputy zostały uzupełnione, jeżeli tak to link zadziała
         onClick={isFormValid ? null : (e) => e.preventDefault()}
       >
         <button className="button mark__as-btn" onClick={handleClick}>

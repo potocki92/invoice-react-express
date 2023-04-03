@@ -31,3 +31,10 @@
 select::-ms-expand {
   display: none;
 }
+.delete {
+  position: absolute;
+  right: -25px;
+}
+.relative {
+  position: relative;
+}

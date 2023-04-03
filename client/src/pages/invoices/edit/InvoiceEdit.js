@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
+import InvoicePDF from "../../../components/InvoicePDF/InvoicePDF";
 
 const InvoiceEdit = () => {
   let { id, invoiceId } = useParams();
@@ -21,8 +22,8 @@ const InvoiceEdit = () => {
   });
   const [products, setProducts] = useState([]);
   const [selectedProduct, setSelectedProduct] = useState(null);
+  const [clients, setClients] = useState([]);
   const [loading, setLoading] = useState(true);
-
   // Load invoice from database
   useEffect(() => {
     const fetchInvoice = async () => {
@@ -36,6 +37,19 @@ const InvoiceEdit = () => {
     };
     fetchInvoice();
   }, [id, invoiceId]);
+
+  // Load all clients ro setClients
+  useEffect(() => {
+    const fetchClients = async () => {
+      try {
+        const response = await axios.get(`/${id}/clients`);
+        setClients(response.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchClients();
+  }, [id]);
   // Load all products to setProducts
   useEffect(() => {
     const fetchProducts = async () => {
@@ -94,7 +108,7 @@ const InvoiceEdit = () => {
       setSelectedProduct(null);
     }
   };
-  
+
   // Save all changed data
   const handleSave = async () => {
     try {
@@ -109,195 +123,24 @@ const InvoiceEdit = () => {
     return <div>Loading...</div>;
   }
   return (
-    <div>
-      <h1>Edit Invoice {invoice._id}</h1>
-      <p>Invoice number: {invoice.invoiceNumber}</p>
-      <Link to={`/${id}`}>
-        <button className="button back_button">Go Back</button>
-      </Link>
-      <div className="details__box details__box-wrapper">
-        <h2>Invoice Details</h2>
-        <div className="form__group">
-          <p>Invoice Date</p>
-          <input
-            type="date"
-            name="invoiceDate"
-            value={invoice.date.invoiceDate}
-            onChange={handleChange}
-          />
-        </div>
-        <div className="form__group">
-          <p>Due Date</p>
-          <input
-            type="date"
-            name="dueDate"
-            value={invoice.date.dueDate}
-            onChange={handleChange}
-          />
-        </div>
-      </div>{" "}
-      <div className="details__box details__box-wrapper">
-        <h2>Client</h2>
-
-        <div className="details__box">
-          <div className="form__group">
-            <label htmlFor="clientName">Client name:</label>
-            <input
-              type={"text"}
-              id="clientName"
-              name="clientName"
-              value={invoice.client.clientName}
-              onChange={handleChange}
-            />
-          </div>
-          <div className="details__box">
-            <div className="form__group">
-              <label htmlFor="clientNip">Client NIP:</label>
-              <input
-                type={"text"}
-                id={"clientNip"}
-                name="clientNip"
-                value={invoice.client.clientNip}
-                onChange={handleChange}
-              />
-            </div>
-          </div>
-          <div className="details__box">
-            <div className="form__group">
-              <label htmlFor="clientRegon">Client REGON:</label>
-              <input
-                type={"text"}
-                id={"clientRegon"}
-                name="clientRegon"
-                value={invoice.client.clientRegon}
-                onChange={handleChange}
-              />
-            </div>
-          </div>
-          <div className="details__box">
-            <div className="form__group">
-              <label htmlFor="clientEmail">Client email:</label>
-              <input
-                type={"email"}
-                id={"clientEmail"}
-                name="clientEmail"
-                value={invoice.client.clientEmail}
-                onChange={handleChange}
-              />
-            </div>
-          </div>
-          <div className="details__box">
-            <div className="form__group">
-              <label htmlFor="clientPhone">Client phone:</label>
-              <input
-                type={"tel"}
-                id={"clientPhone"}
-                name="clientPhone"
-                value={invoice.client.clientPhone}
-                onChange={handleChange}
-              />
-            </div>
-          </div>
-          <div className="details__box">
-            <div className="form__group">
-              <label htmlFor="clientCity">Client city:</label>
-              <input
-                type={"text"}
-                id={"clientCity"}
-                name="clientCity"
-                value={invoice.client.clientCity}
-                onChange={handleChange}
-              />
-            </div>
-          </div>
-          <div className="details__box">
-            <div className="form__group">
-              <label htmlFor="clientPostal">Client postal:</label>
-              <input
-                type={"text"}
-                id={"clientPostal"}
-                name="clientPostal"
-                value={invoice.client.clientPostal}
-                onChange={handleChange}
-              />
-            </div>
-          </div>
-          <div className="details__box">
-            <div className="form__group">
-              <label htmlFor="clientAddress">Client address:</label>
-              <input
-                type={"text"}
-                id={"clientAddress"}
-                name="clientAddress"
-                value={invoice.client.clientAddress}
-                onChange={handleChange}
-              />
-            </div>
-          </div>
-        </div>
-        <div className="details__box details__box-wrapper">
-          <h2>Product</h2>
-          {invoice.products.map((product, index) => (
-            <div className="details__box" key={index}>
-              <div className="form__group">
-                <label htmlFor="productsName">Product Name:</label>
-                <input
-                  type={"text"}
-                  id="productsName"
-                  name="productsName"
-                  value={product.productsName}
-                  onChange={(e) => handleChange(e, index)}
-                />
-              </div>
-              <div className="form__group">
-                <label htmlFor="productsQty">Qty:</label>
-                <input
-                  type={"number"}
-                  id="productsQty"
-                  name="productsQty"
-                  value={product.productsQty}
-                  onChange={(e) => handleChange(e, index)}
-                />
-              </div>
-              <div className="form__group">
-                <label htmlFor="productsPrice">Price:</label>
-                <input
-                  type={"number"}
-                  id="productsPrice"
-                  name="productsPrice"
-                  value={product.productsPrice}
-                  onChange={(e) => handleChange(e, index)}
-                />
-              </div>
-              <div className="form__group">
-                <span>Amount: {product.amount}</span>
-              </div>
-              <button
-                className="button"
-                onClick={() => handleRemoveProduct(index)}
-              >
-                Remove
-              </button>
-            </div>
-          ))}
-        </div>
-        <div className="form__group">
-          <label htmlFor="productSelect">Product:</label>
-          <select id="productSelect" onChange={handleProductChange}>
-            <option value="">-- Select a product --</option>
-            {products.map((product) => (
-              <option key={product._id} value={product._id}>
-                {product.productsName}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div className="form__group">
-          <button className="button add_button" onClick={handleAddProduct}>
-            Add Product
-          </button>
+    <div className="container section is-flex col">
+      <div className="details__box">
+        <div className="invoice__home-logo">
+          <h1>Edit Invoice {invoice._id}</h1>
+          <p>Invoice number: {invoice.invoiceNumber}</p>
+          <Link to={`/${id}`}>
+            <button className="button back_button">Go Back</button>
+          </Link>
         </div>
       </div>
+      <InvoicePDF
+        invoice={invoice}
+        setNewInvoice={setInvoice}
+        handleChange={handleChange}
+        clients={clients}
+        products={products}
+        selectedProduct={selectedProduct}
+      />
       <button className="button" onClick={handleSave}>
         Save
       </button>

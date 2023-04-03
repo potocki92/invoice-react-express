@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 /*
   Document, Page, Text, View, StyleSheet, and pdf: These are components and functions provided by the "@react-pdf/renderer" package used for generating a PDF document in a React application.
 */
@@ -318,19 +318,66 @@ const InvoicePDF = ({
     saveAs(pdfBlob, `${invoice.invoiceNumber}.pdf`);
   };
 
-  const [cards, setCards] = useState([]);
-  const [clientName, setClientName] = useState("");
-  const [clientNip, setClientNip] = useState("");
-  const [clientRegon, setClientRegon] = useState("");
-  const [clientEmail, setClientEmail] = useState("");
-  const [clientPhone, setClientPhone] = useState("");
-  const [clientCity, setClientCity] = useState("");
-  const [clientPostal, setClientPostal] = useState("");
-  const [clientAddress, setClientAddress] = useState("");
-  const [selectedClient, setSelectedClient] = useState("");
-  const [dueDate, setDueDate] = useState("");
-  const [invoiceDate, setInvoiceDate] = useState("");
+  const [clientName, setClientName] = useState(invoice.client.clientName || "");
+  const [clientNip, setClientNip] = useState(invoice.client.clientNip || "");
+  const [clientRegon, setClientRegon] = useState(
+    invoice.client.clientRegon || ""
+  );
+  const [clientEmail, setClientEmail] = useState(
+    invoice.client.clientEmail || ""
+  );
+  const [clientPhone, setClientPhone] = useState(
+    invoice.client.clientPhone || ""
+  );
+  const [clientCity, setClientCity] = useState(invoice.client.clientCity || "");
+  const [clientPostal, setClientPostal] = useState(
+    invoice.client.clientPostal || ""
+  );
+  const [clientAddress, setClientAddress] = useState(
+    invoice.client.clientAddress || ""
+  );
+  const [selectedClient, setSelectedClient] = useState(invoice.client || "");
+  const [dueDate, setDueDate] = useState(
+    invoice.date.dueDate || new Date().toISOString().substring(0, 10)
+  ); // Load "dueDate" if invoice is editing or create new Date
+  const [invoiceDate, setInvoiceDate] = useState(
+    invoice.date.invoiceDate || new Date().toISOString().substring(0, 10)
+  ); // Load "invoiceDate" if invoice is editing or create new Date
+  const [total, setTotal] = useState(0);
+  /*
+    This code uses the useEffect hook to calculate the total amount of the products in an invoice 
+    whenever the invoice.products.items array changes.
 
+    Inside the hook, it first initializes the totalAmount variable to zero. 
+    Then, it checks if the invoice.products.items array exists by using optional chaining (?.). 
+    If it does, it uses the reduce method to iterate over each item in the array and accumulate 
+    the amount property of each item into the totalAmount variable.
+
+    Finally, the setTotal function is called with the totalAmount value to update the state of the component.
+
+    This code demonstrates the use of the reduce method to perform a calculation on an array 
+    and how to update the state of a React component using the setTotal function.
+  */
+  useEffect(() => {
+    let totalAmount = 0;
+
+    if (invoice?.products?.items) {
+      const items = invoice.products.items;
+      totalAmount = items.reduce(
+        (accumulator, currentAmount) => accumulator + currentAmount.amount,
+        0
+      );
+      console.log(invoice.products);
+      setTotal(totalAmount);
+      setNewInvoice({
+        ...invoice,
+        products: {
+          ...invoice.products,
+          totalAmount: totalAmount,
+        },
+      });
+    }
+  }, [invoice.products.items, setTotal]);
   /*
     updateClient: 
     This is a function used to update the client details in the invoice. 
@@ -390,13 +437,20 @@ const InvoicePDF = ({
   };
   /*
     handleRemoveCard:
-    This is a function used to remove a product card from the invoice. 
-    It takes an index as an argument, removes the corresponding card from the "cards" array, and updates the state.
+    This is a function used to remove a product items from the invoice. 
+    It takes an index as an argument, removes the corresponding item from the "updateItems" array, and updates the state.
   */
   const handleRemoveCard = (index) => {
-    const updatedCards = [...cards];
-    updatedCards.splice(index, 1);
-    setCards(updatedCards);
+    const updateItems = [...invoice.products.items];
+    updateItems.splice(index, 1);
+    console.log(updateItems);
+    setNewInvoice({
+      ...invoice,
+      products: {
+        ...invoice.products,
+        items: updateItems,
+      },
+    });
   };
   /*
     handleAddCard: 
@@ -404,9 +458,15 @@ const InvoicePDF = ({
     It adds an empty object to the "cards" array and updates the state.
   */
   const handleAddCard = () => {
-    setCards([...cards, {}]);
-    setNewInvoice({ ...invoice, products: [...invoice.products, {}] });
+    setNewInvoice({
+      ...invoice,
+      products: {
+        ...invoice.products,
+        items: [...invoice.products.items, {}],
+      },
+    });
   };
+
   /*
     handleChange: 
     This function takes an event object as its input, which is typically generated by a user interacting with a form element. 
@@ -445,21 +505,21 @@ const InvoicePDF = ({
           <h1 className="fs-45 bold right">INVOICE</h1>
           <p className="fs-20 right">{invoice.invoiceNumber}</p>
           <div className="flex flex-end flex-ai gap-15">
-            <p className="">Due Date:</p>
+            <p className="">Invoice Date:</p>
             <input
               type={"date"}
               name="invoiceDate"
-              className="input input-date w-35"
+              className="input input-date w-35 fs-11"
               value={invoiceDate || ""}
               onChange={handleChange}
             />
           </div>
           <div className="flex flex-end flex-ai gap-15">
-            <p className="">Invoice Date:</p>
+            <p className="">Due Date:</p>
             <input
               type={"date"}
               name="dueDate"
-              className="input input-date w-35 "
+              className="input input-date w-35 fs-11"
               value={dueDate || ""}
               onChange={handleChange}
             />
@@ -509,7 +569,7 @@ const InvoicePDF = ({
             type={"text"}
             className="input"
             placeholder="City, Postal Code"
-            value={`${invoice.user.address.city}, ${invoice.user.address.postalCode}`}
+            value={`${invoice.user.address.postalCode}, ${invoice.user.address.city}`}
           />
         </div>
         <div className="view w-50">
@@ -519,9 +579,11 @@ const InvoicePDF = ({
               <select
                 className="custom-select"
                 value={selectedClient}
-                onChange={handleClientChange}
+                onChange={(event) => handleClientChange(event)}
               >
-                <option value={""}>Select the client</option>
+                <option value={""}>
+                  {clientName ? invoice.client.clientName : "Select the client"}
+                </option>
                 {clients.map((client) => (
                   <option key={client._id} value={client._id}>
                     {client.clientName}
@@ -532,14 +594,6 @@ const InvoicePDF = ({
               <div></div>
             )}
           </div>
-          <input
-            type={"text"}
-            name={"clientName"}
-            className="input"
-            placeholder="Client Name"
-            value={clientName}
-            onChange={handleChange}
-          />
           <input
             type={"tel"}
             name={"clientPhone"}
@@ -580,58 +634,103 @@ const InvoicePDF = ({
             value={clientAddress}
             onChange={handleChange}
           />
-          <input
-            type={"text"}
-            name={"clientCity"}
-            className="input"
-            placeholder="City"
-            value={`${clientCity}, ${clientPostal}`}
-            onChange={handleChange}
-          />
+          <div className="flex w-98">
+            <input
+              type={"text"}
+              name={"clientPostal"}
+              className="input w-40"
+              placeholder="Postal"
+              value={clientPostal}
+              onChange={handleChange}
+            />
+            <input
+              type={"text"}
+              name={"clientCity"}
+              className="input"
+              placeholder="City"
+              value={clientCity}
+              onChange={handleChange}
+            />
+          </div>
         </div>
       </div>
       <div className="view mt-30 bg-dark flex flex-ai">
-        <div className="view w-48 p-4-8">
+        <div className="view w-25 p-4-8">
           <span className="span white bold">Item Description</span>
         </div>
-        <div className="view w-17 p-4-8">
-          {" "}
-          <div className="view w-48 p-4-8">
-            <span className="span white bold">Qty</span>
+        <div className="view w-22 p-4-8 flex">
+          <div className="view w-50 p-4-8">
+            <span className="span white bold right">Qty</span>
+          </div>
+          <div className="view w-50 p-4-8">
+            <span className="span white bold right">Tax</span>
           </div>
         </div>
-        <div className="view w-17 p-4-8">
-          {" "}
-          <div className="view w-48 p-4-8">
-            <span className="span white bold">Rate</span>
+        <div className="view w-35 p-4-8 flex">
+          <div className="view w-50 p-4-8">
+            <span className="span white bold right">Rate</span>
+          </div>
+          <div className="view w-50 p-4-8">
+            <span className="span white bold right">Tax Rate</span>
           </div>
         </div>
         <div className="view w-18 p-4-8">
-          {" "}
-          <div className="view w-48 p-4-8">
-            <span className="span white bold">Amount</span>
-          </div>
+          <span className="span white bold right">Amount</span>
         </div>
       </div>
-
-      {cards.map((card, index) => (
+      {invoice.products.items.map((product, index) => (
         <ProductCard
           key={index}
           index={index}
+          product={product}
           invoice={invoice}
           setNewInvoice={setNewInvoice}
           selectedProduct={selectedProduct}
           selectedProductIndex={selectedProductIndex}
           products={products}
           handleProductChange={handleProductChange}
-          handleRemoveCard={handleRemoveCard}
         />
       ))}
-      <button className="circle-button" onClick={handleAddCard}>
-        +
-      </button>
-      <div className="view"></div>
-      <div className="view"></div>
+      <div className="flex">
+        <div className="view p-4-8 w-50">
+          <button className="circle-button" onClick={handleAddCard}>
+            +
+          </button>
+        </div>
+        <div className="view w-50 m-t">
+          <div className="flex">
+            <div className="w-50 p-5">
+              <span className="span">Sub Total</span>
+            </div>
+            <div className="w-50 p-5">
+              <span class="span right bold dark">{`${total}.00`}</span>
+            </div>
+          </div>
+          <div className="flex">
+            <div className="w-50 p-5">
+              <span className="span">Sale Tax (10%)</span>
+            </div>
+            <div className="w-50 p-5">
+              <span class="span right bold dark">{`${total}.00`}</span>
+            </div>
+          </div>
+          <div className="view flex bg-gray p-5">
+            <div className="view w-50 p-5">
+              <span className="span bold">TOTAL</span>
+            </div>
+            <div className="view w-50 p-5 flex">
+              <span className="span bold dark right">$</span>
+              <span className="span right bold dark">{`${total}.00`}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="mt-20">
+        <span className="span bold">Notes</span>
+        <textarea className="input w-100 h-50 t-area">
+          It was great doing business with you.
+        </textarea>
+      </div>
       <button className="button" onClick={generatePdf}>
         Generate PDF
       </button>

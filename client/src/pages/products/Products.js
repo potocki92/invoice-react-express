@@ -12,8 +12,11 @@ const Products = () => {
     qty: 1,
     productsPrice: 0.0,
     amount: 0,
+    productsTax: 0.0,
   });
-  
+
+  const vatRate = [0.23, 0.08];
+  vatRate.forEach((vat) => console.log(vat));
   const [allProducts, setAllProducts] = useState(
     JSON.parse(localStorage.getItem("products")) || []
   );
@@ -39,6 +42,12 @@ const Products = () => {
     setNewProduct({ ...newProduct, [name]: value });
   };
 
+  const handleVatChange = (event, index) => {
+    const indexTarget = event.target.value;
+    const selectedVatRate = vatRate[indexTarget];
+    console.log("selected");
+    setNewProduct({ ...newProduct, productsTax: selectedVatRate });
+  };
   const handleClick = (e) => {
     e.preventDefault();
     axios
@@ -51,6 +60,7 @@ const Products = () => {
           productsName: "",
           qty: 1,
           price: 0.0,
+          productsTax: 0.0,
         }); // resetujemy dane dotyczące produktu
       })
       .catch((err) => console.error(err));
@@ -98,6 +108,25 @@ const Products = () => {
             placeholder={"Product name"}
             required
           ></input>
+        </div>
+        <div className="form__group">
+          <p>Tax</p>
+          {vatRate.length ? (
+            <select
+              className="custom-select"
+              name="productsTax"
+              onChange={handleVatChange}
+            >
+              <option value={""}>Select the TAX</option>
+              {vatRate.map((vat, index) => (
+                <option key={index} value={index}>
+                  {vat}
+                </option>
+              ))}
+            </select>
+          ) : (
+            <div></div>
+          )}
         </div>
         <button className="button mark__as-btn" type="submit">
           Click
