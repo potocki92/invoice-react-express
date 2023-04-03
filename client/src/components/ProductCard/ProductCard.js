@@ -25,6 +25,10 @@ const ProductCard = ({ invoice, setNewInvoice, product, products, index }) => {
   const [selectedProduct, setSelectedProduct] = useState("");
   const [productQty, setProductQty] = useState(product.productsQty || 1);
   const [productPrice, setProductPrice] = useState(product.productsPrice || 1);
+  const [productTax, setProductTax] = useState(product.productsTax || 1);
+  const [productTaxRate, setProductTaxRate] = useState(
+    product.productsRateTax || 0.0
+  );
   const [amount, setAmount] = useState(1);
 
   /*
@@ -68,11 +72,14 @@ const ProductCard = ({ invoice, setNewInvoice, product, products, index }) => {
     });
   };
 
-  // Update amount for every change of productQty, productPrice, product.productsQty, product.productsPrice or amount
+  // Update amount for every change of productQty, productPrice, product.productsQty, product.productsPrice, productTaxRate or amount
   useEffect(() => {
     setProductPrice(product.productsPrice);
     setProductQty(product.productsQty);
-    const updateAmount = productQty * productPrice;
+
+    const updateTaxRate = productQty * productPrice * productTax;
+    setProductTaxRate(updateTaxRate);
+    const updateAmount = productQty * productPrice + productTaxRate;
     setAmount(updateAmount);
     updatedProduct("amount", updateAmount);
   }, [
@@ -80,6 +87,7 @@ const ProductCard = ({ invoice, setNewInvoice, product, products, index }) => {
     productPrice,
     product.productsQty,
     product.productsPrice,
+    productTaxRate,
     amount,
   ]);
 
@@ -101,10 +109,12 @@ const ProductCard = ({ invoice, setNewInvoice, product, products, index }) => {
       productsName: selectedProduct.productsName,
       productsQty: selectedProduct.qty,
       productsPrice: selectedProduct.productsPrice,
+      productsTax: selectedProduct.productsTax,
       amount: selectedProduct.amount,
     });
     setProductPrice(selectedProduct.productsPrice);
     setProductQty(selectedProduct.qty);
+    setProductTax(selectedProduct.productsTax);
 
     const updateProduct = [...invoice.products.items]; // copy all products from invoice.products
 
@@ -113,6 +123,7 @@ const ProductCard = ({ invoice, setNewInvoice, product, products, index }) => {
       productsName: selectedProduct.productsName,
       productsQty: selectedProduct.qty,
       productsPrice: selectedProduct.productsPrice,
+      productsTax: selectedProduct.productsTax,
       amount: selectedProduct.amount,
     };
 
@@ -152,7 +163,7 @@ const ProductCard = ({ invoice, setNewInvoice, product, products, index }) => {
 
   return (
     <div className="view row flex b-b p-10 flex-align relative">
-      <div className="view w-48 p-4-8 flex-align flex">
+      <div className="view w-25 p-4-8 flex-align flex">
         {products.length ? (
           <div className="flex">
             <select
@@ -176,23 +187,45 @@ const ProductCard = ({ invoice, setNewInvoice, product, products, index }) => {
           <div></div>
         )}
       </div>
-      <div className="view w-17 p-4-8 pb-10">
-        <input
-          className="input dark right p-0"
-          name="productsQty"
-          placeholder="1"
-          value={productQty}
-          onChange={handleChange}
-        />
+      <div className="view w-22 p-4-8 flex">
+        <div className="view w-50 p-4-8 pb-10">
+          <input
+            className="input dark right p-0"
+            name="productsQty"
+            placeholder="1"
+            value={productQty}
+            onChange={handleChange}
+          />
+        </div>
+        <div className="view w-50 p-4-8 pb-10 ">
+          <input
+            className="input dark right p-0"
+            name="productsTax"
+            placeholder="0.00"
+            value={productTax}
+            onChange={handleChange}
+          />
+        </div>
       </div>
-      <div className="view w-17 p-4-8 pb-10 ">
-        <input
-          className="input dark right p-0"
-          name="productsPrice"
-          placeholder="0000.00"
-          value={productPrice}
-          onChange={handleChange}
-        />
+      <div className="view w-35 p-4-8 flex">
+        <div className="view w-50 p-4-8 pb-10 ">
+          <input
+            className="input dark right p-0"
+            name="productsPrice"
+            placeholder="0000.00"
+            value={productPrice}
+            onChange={handleChange}
+          />
+        </div>
+        <div className="view w-50 p-4-8 pb-10">
+          <input
+            className="input dark right p-0"
+            name="productsRateTax"
+            placeholder="0000.00"
+            value={productTaxRate}
+            onChange={handleChange}
+          />
+        </div>
       </div>
       <div className="view w-18 p-4-8 pb-10 right">
         <span className="span dark">{amount}</span>
