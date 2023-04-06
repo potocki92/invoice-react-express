@@ -29,9 +29,8 @@ export const Home = () => {
       })
       .catch((err) => console.error(err));
   };
-  console.log(allInvoices);
   return (
-    <main div className="main__container">
+    <main div className="container">
       <div className="invoice__home">
         <div className="invoice__home-logo">
           <h1>Invoice</h1>

@@ -72,7 +72,7 @@ const Client = () => {
       .catch((err) => console.error(err));
   };
   return (
-    <div className="main__container">
+    <div className="container">
       <div className="invoice__home-logo">
         <h1>Customers</h1>
         {allClients && <p>There are total {allClients.length} clients</p>}

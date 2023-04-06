@@ -22,10 +22,6 @@ span {
   background: #f0f2f5;
 }
 
-.container {
-  max-width: 100%;
-  margin: 0 20px 0 20px;
-}
 .section {
   padding: 70px 0;
 }
@@ -46,10 +42,6 @@ img {
 
 .paragraph {
   font-size: 0.8 rem;
-}
-
-.main__container {
-  width: 100%;
 }
 
 /* Home */
@@ -141,7 +133,6 @@ img {
 
 .details__box {
   margin-bottom: 1.9rem;
-  width: 98%;
 }
 
 .invoice__created-date {

@@ -1,8 +1,10 @@
 import { Types } from "mongoose";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 import { ProductList } from "./ProductList";
+import { ModalCard } from "../../components/ModalCard/ModalCard";
+import taxRate from "./taxRateArray";
 
 const Products = () => {
   let { id } = useParams();
@@ -12,11 +14,9 @@ const Products = () => {
     qty: 1,
     productsPrice: 0.0,
     amount: 0,
-    productsTax: 0.0,
+    productsTax: {},
   });
 
-  const vatRate = [0.23, 0.08];
-  vatRate.forEach((vat) => console.log(vat));
   const [allProducts, setAllProducts] = useState(
     JSON.parse(localStorage.getItem("products")) || []
   );
@@ -44,8 +44,7 @@ const Products = () => {
 
   const handleVatChange = (event, index) => {
     const indexTarget = event.target.value;
-    const selectedVatRate = vatRate[indexTarget];
-    console.log("selected");
+    const selectedVatRate = taxRate[indexTarget];
     setNewProduct({ ...newProduct, productsTax: selectedVatRate });
   };
   const handleClick = (e) => {
@@ -53,7 +52,7 @@ const Products = () => {
     axios
       .post(`/${id}/addProduct`, newProduct)
       .then((res) => {
-        console.log(res.data);
+        console.log(res.data, newProduct);
         setAllProducts([...allProducts, newProduct]); // aktualizujemy stan listy produktów
         setNewProduct({
           _id: Types.ObjectId(), // wygeneruj nowe ID
@@ -76,8 +75,9 @@ const Products = () => {
       })
       .catch((err) => console.error(err));
   };
+
   return (
-    <div className="main__container">
+    <div className="container">
       <div className="invoice__home-logo">
         <h1>Products</h1>
         {allProducts && <p>There are total {allProducts.length} products</p>}
@@ -85,54 +85,14 @@ const Products = () => {
       <Link to={`/${id}`}>
         <button className="button back_button">Go Back</button>
       </Link>
-
-      <form className="details__box" onSubmit={(e) => handleClick(e)}>
-        <div className="form__group">
-          <p>Product Name</p>
-          <input
-            type={"text"}
-            name={"productsName"}
-            value={newProduct.productsName}
-            onChange={handleChange}
-            placeholder={"Product name"}
-            required
-          ></input>
-        </div>
-        <div className="form__group">
-          <p>Price</p>
-          <input
-            type={"number"}
-            name={"productsPrice"}
-            value={newProduct.productsPrice}
-            onChange={handleChange}
-            placeholder={"Product name"}
-            required
-          ></input>
-        </div>
-        <div className="form__group">
-          <p>Tax</p>
-          {vatRate.length ? (
-            <select
-              className="custom-select"
-              name="productsTax"
-              onChange={handleVatChange}
-            >
-              <option value={""}>Select the TAX</option>
-              {vatRate.map((vat, index) => (
-                <option key={index} value={index}>
-                  {vat}
-                </option>
-              ))}
-            </select>
-          ) : (
-            <div></div>
-          )}
-        </div>
-        <button className="button mark__as-btn" type="submit">
-          Click
-        </button>
-      </form>
-
+      
+      <ModalCard
+        newProduct={newProduct}
+        taxRate={taxRate}
+        handleVatChange={handleVatChange}
+        handleClick={handleClick}
+        handleChange={handleChange}
+      />
       <ProductList id={id} products={allProducts} onDelete={deleteProduct} />
     </div>
   );

@@ -87,7 +87,7 @@ const User = () => {
   };
 
   return (
-    <div className="main__container">
+    <div className="container">
       <Link to={`/${id}`}>
         <button className="button back_button">Go Back</button>
       </Link>
