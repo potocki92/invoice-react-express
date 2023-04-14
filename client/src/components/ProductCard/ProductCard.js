@@ -166,13 +166,13 @@ const ProductCard = (props) => {
   const [selectedProduct, setSelectedProduct] = useState("");
   const [productQty, setProductQty] = useState(props.product.productsQty || 1);
   const [productPrice, setProductPrice] = useState(props.product.productsPrice || 1);
-  const [productTax, setProductTax] = useState(props.product.productsTax || 1);
+  const [productTax, setProductTax] = useState(props.product.productsTax || 0);
   const [productTaxRate, setProductTaxRate] = useState(
-    props.product.productsRateTax || 0.0
+    props.product.productsRateTax || 0
   );
   const [amount, setAmount] = useState(1);
 
-  console.log(props.product);
+  console.table(productTax);
 /*
   This function takes in two arguments, key and value, and updates the invoice object with the new value.
   The function first creates a new array of updatedProducts by iterating over the invoice.products.items array using the map method.
@@ -219,7 +219,7 @@ useEffect(() => {
   setProductPrice(props.product.productsPrice);
   setProductQty(props.product.productsQty);
 
-  const updateTaxRate = productQty * productPrice * productTax.value;
+  const updateTaxRate = (productTax !== 1) ? productQty * productPrice * productTax.value : 0;
   setProductTaxRate(updateTaxRate);
   const updateAmount = productQty * productPrice + productTaxRate;
   setAmount(updateAmount);
@@ -343,8 +343,8 @@ const handleChange = (event) => {
           <input
             className="input dark right p-0"
             name="productsTax"
-            placeholder="0.00"
-            value={productTax.name}
+            placeholder="0"
+            value={productTax.name || "0%"}
             onChange={handleChange}
           />
         </div>
@@ -364,7 +364,7 @@ const handleChange = (event) => {
             className="input dark right p-0"
             name="productsRateTax"
             placeholder="0000.00"
-            value={productTaxRate}
+            value={productTaxRate || 0}
             onChange={handleChange}
           />
         </div>

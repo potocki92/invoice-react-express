@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 import { ProductList } from "./ProductList";
-import { ModalCard } from "../../components/ModalCard/ModalCard";
+import { ProductForm  } from "../../components/ProductForm/ProductForm";
 import taxRate from "./taxRateArray";
 
 const Products = () => {
@@ -14,7 +14,7 @@ const Products = () => {
     qty: 1,
     productsPrice: 0.0,
     amount: 0,
-    productsTax: {},
+    productsTax: 1,
   });
 
   const [allProducts, setAllProducts] = useState(
@@ -45,7 +45,11 @@ const Products = () => {
   const handleVatChange = (event, index) => {
     const indexTarget = event.target.value;
     const selectedVatRate = taxRate[indexTarget];
-    setNewProduct({ ...newProduct, productsTax: selectedVatRate });
+    if (index === -1) {
+      setNewProduct({ ...newProduct, productsTax: 1 });
+    } else {
+      setNewProduct({ ...newProduct, productsTax: selectedVatRate });
+    }
   };
   const handleClick = (e) => {
     e.preventDefault();
@@ -58,8 +62,9 @@ const Products = () => {
           _id: Types.ObjectId(), // wygeneruj nowe ID
           productsName: "",
           qty: 1,
-          price: 0.0,
-          productsTax: 0.0,
+          productsPrice: 0.0,
+          amount: 0,
+          productsTax: 1,
         }); // resetujemy dane dotyczące produktu
       })
       .catch((err) => console.error(err));
@@ -85,8 +90,8 @@ const Products = () => {
       <Link to={`/${id}`}>
         <button className="button back_button">Go Back</button>
       </Link>
-      
-      <ModalCard
+
+      <ProductForm 
         newProduct={newProduct}
         taxRate={taxRate}
         handleVatChange={handleVatChange}

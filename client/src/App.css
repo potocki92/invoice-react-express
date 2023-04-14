@@ -20,6 +20,7 @@ span {
 
 .App {
   background: #f0f2f5;
+  height: 100%;
 }
 
 .section {
@@ -207,9 +208,9 @@ img {
   outline: none;
   cursor: pointer;
 }
-.form__group {
+/* .form__group {
   margin-bottom: 1.9rem;
-}
+} */
 
 .form__group p {
   margin-bottom: 10px;

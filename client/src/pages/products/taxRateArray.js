@@ -1,5 +1,4 @@
 const taxRate = [
-  { name: "0%", value: 0 },
   { name: "5%", value: 0.05 },
   { name: "8%", value: 0.08 },
   { name: "23%", value: 0.23 },

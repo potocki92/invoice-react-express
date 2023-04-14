@@ -1,11 +1,19 @@
+/* This file imports necessary modules and components, and exports the main Client component */
 import { Types } from "mongoose";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import axios from "axios";
-import { ClientList } from "./ClientList";
-
+import { ClientCard } from "../../components/ClientCard/ClientCard";
+import "./Client.css";
+import { ClientForm } from "../../components/ClientForm/ClientForm";
+/* 
+  This function defines the main Client component, 
+  which fetches all clients data for the current user from the database, 
+  adds new clients to the database, and allows deleting clients from the database 
+*/
 const Client = () => {
-  let { id } = useParams();
+  let { id } = useParams(); //  This line uses the useParams() hook to retrieve the ID of the current user from the URL
+  /* This line defines the initial state for a new client, with empty strings for all properties */
   const [newClient, setNewClient] = useState({
     _id: Types.ObjectId(),
     clientName: "",
@@ -17,12 +25,15 @@ const Client = () => {
     clientPostal: "",
     clientAddress: "",
   });
+  /* This line defines the initial state for all clients, either by retrieving them from local storage, or setting an empty array */
   const [allClients, setAllClients] = useState(
     JSON.parse(localStorage.getItem("clients")) || []
   );
+  /* This effect saves the current state of allClients to local storage whenever it is updated */
   useEffect(() => {
     localStorage.setItem("clients", JSON.stringify(allClients));
   }, [allClients]);
+  /* This effect retrieves all clients data from the server for the current user and sets it to the allClients state */
   useEffect(() => {
     const fetchClients = async () => {
       try {
@@ -34,12 +45,12 @@ const Client = () => {
     };
     fetchClients();
   }, [id]);
-
+  /* This function updates the newClient state whenever any input field is changed */
   const handleChange = (event) => {
     const { name, value } = event.target;
     setNewClient({ ...newClient, [name]: value });
   };
-
+  /* This function adds a new client to the database when the 'Add Client' button is clicked, and resets the newClient state */
   const handleClick = (e) => {
     e.preventDefault();
     axios
@@ -61,7 +72,7 @@ const Client = () => {
       })
       .catch((err) => console.error(err));
   };
-
+  /* This function deletes a client from the database when the 'Delete' button is clicked */
   const deleteClient = (clientId) => {
     axios
       .delete(`/${id}/clients/${clientId}`)
@@ -71,6 +82,9 @@ const Client = () => {
       })
       .catch((err) => console.error(err));
   };
+  /* This block of code defines the structure of the Client component, 
+  which includes a form for adding new clients, a list of all clients with their 
+  information displayed in ClientCard components, and a button for returning to the previous page */
   return (
     <div className="container">
       <div className="invoice__home-logo">
@@ -81,98 +95,16 @@ const Client = () => {
         <button className="button back_button">Go Back</button>
       </Link>
 
-      <form className="details__box" onSubmit={(e) => handleClick(e)}>
-        <div className="form__group">
-          <p>Name</p>
-          <input
-            type={"text"}
-            name={"clientName"}
-            value={newClient.clientName}
-            onChange={handleChange}
-            placeholder={"Enter Client Name"}
-            required
-          ></input>
-        </div>
-        <div className="form__group">
-          <p>Nip</p>
-          <input
-            type={"text"}
-            name={"clientNip"}
-            value={newClient.clientNip}
-            onChange={handleChange}
-            placeholder={"Enter Client Nip"}
-            required
-          ></input>
-        </div>
-        <div className="form__group">
-          <p>Regon</p>
-          <input
-            type={"text"}
-            name={"clientRegon"}
-            value={newClient.clientRegon}
-            onChange={handleChange}
-            placeholder={"Enter Client REGON"}
-          ></input>
-        </div>
-        <div className="form__group">
-          <p>Email</p>
-          <input
-            type={"email"}
-            name={"clientEmail"}
-            value={newClient.clientEmail}
-            onChange={handleChange}
-            placeholder={"Enter Client Email"}
-          ></input>
-        </div>
-        <div className="form__group">
-          <p>Phone</p>
-          <input
-            type={"tel"}
-            name={"clientPhone"}
-            value={newClient.clientPhone}
-            onChange={handleChange}
-            placeholder={"Enter Client Phone"}
-          ></input>
-        </div>
-        <div className="form__group">
-          <p>City</p>
-          <input
-            type={"text"}
-            name={"clientCity"}
-            value={newClient.clientCity}
-            onChange={handleChange}
-            placeholder={"Enter Client City"}
-            required
-          ></input>
-        </div>
-        <div className="form__group">
-          <p>Postal</p>
-          <input
-            type={"text"}
-            name={"clientPostal"}
-            value={newClient.clientPostal}
-            onChange={handleChange}
-            placeholder={"Enter Client Postal"}
-            required
-          ></input>
-        </div>
-        <div className="form__group">
-          <p>Address</p>
-          <input
-            type={"text"}
-            name={"clientAddress"}
-            value={newClient.clientAddress}
-            onChange={handleChange}
-            placeholder={"Enter Client Address"}
-            required
-          ></input>
-        </div>
-        <button className="button mark__as-btn" type="submit">
-          Click
-        </button>
-      </form>
-
-      <ClientList id={id} clients={allClients} onDelete={deleteClient} />
+      <ClientForm
+        newClient={newClient}
+        handleChange={handleChange}
+        handleClick={handleClick}
+      />
+      <div className="section__content grid">
+        {allClients.map((client) => {
+          return <ClientCard id={id} client={client} onDelete={deleteClient} />;
+        })}
+      </div>
     </div>
   );
 };

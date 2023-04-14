@@ -3,6 +3,7 @@ import "./Homepage.css";
 import { Outlet, useParams } from "react-router-dom";
 import Header from "../Header/Header";
 import { useLocation } from "react-router-dom";
+import Sidebar from "../Sidebar/Sidebar";
 
 const Homepage = ({ setLoginUser, user }) => {
   let location = useLocation();
@@ -12,14 +13,15 @@ const Homepage = ({ setLoginUser, user }) => {
   return (
     <Fragment>
       <div className="homepage">
-        <Header setLoginUser={setLoginUser} />
+        <Sidebar />
         {location.pathname === "/" && user._id ? (
           <div>
             <h1>Hello, {user.username}!</h1>
             <p>Your ID: {user._id}</p>
           </div>
         ) : (
-          <div >
+          <div className="homepage__content">
+            <Header setLoginUser={setLoginUser} />
             <Outlet />
           </div>
         )}

@@ -2,6 +2,8 @@
   height: 100%;
   width: 100%;
   position: relative;
+  display: flex;
+  background: #FBFCFF;
 }
 
 .homepage > .button {
@@ -14,4 +16,8 @@
   border-radius: 8px;
   outline: none;
   cursor: pointer;
+}
+
+.homepage__content {
+  width: 100%;
 }

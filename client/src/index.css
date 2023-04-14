@@ -3,9 +3,13 @@
   margin: 0;
   padding: 0;
 }
+html,
 body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-size: 16px;
   font-family: "Nunito", sans-serif;
-  font-size: 14px;
   color: #555;
 }
 input {
@@ -14,14 +18,41 @@ input {
   margin-bottom: 15px;
 }
 button {
-  width: 200px;
   outline: none;
   border: none;
   padding: 15px;
   cursor: pointer;
   font-size: 16px;
 }
-.container {
+
+#root {
+  height: 100vh;
+}
+/* .container {
   width: 1200px;
   margin: 0 auto;
+} */
+
+/*======================================================*/
+.grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+.section {
+  padding: 40px 48px;
+}
+.container {
+  max-width: 480px;
+  margin: 0 auto;
+}
+@media screen and (min-width: 1200px) {
+  .container {
+    max-width: 1200px;
+  }
+}
+@media screen and (min-width: 1600px) {
+  .container {
+    max-width: 1600px;
+  }
 }

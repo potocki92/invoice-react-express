@@ -30,21 +30,12 @@ export const Home = () => {
       .catch((err) => console.error(err));
   };
   return (
-    <main div className="container">
+    <main className="container">
       <div className="invoice__home">
         <div className="invoice__home-logo">
           <h1>Invoice</h1>
           {allInvoices && <p>There are total {allInvoices.length} invoices</p>}
         </div>
-        <Link to={`invoice`}>
-          <button className="button">Add Invoice</button>
-        </Link>
-        <Link to={`products`}>
-          <button className="button">Products</button>
-        </Link>
-        <Link to={`clients`}>
-          <button className="button">Clients</button>
-        </Link>
       </div>
       <InvoiceList id={id} invoices={allInvoices} onDelete={deleteProduct} />
     </main>

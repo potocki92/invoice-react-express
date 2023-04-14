@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import "./Header.css";
+import { ReactComponent as LogoffIcon } from "../../assets/images/svg/logout.svg";
+import { ReactComponent as UserIcon } from "../../assets/images/svg/user.svg";
 
 const Header = ({ setLoginUser }) => {
   let { id } = useParams();
@@ -13,18 +15,25 @@ const Header = ({ setLoginUser }) => {
   }, []);
   return (
     <header className="header">
-      <div className="container is-flex">
-        <h1 className="header__logo">Invoices {user.name}</h1>
+      <div className="container">
         <div className="header__flex-row">
+          <div className="header__textContainer">
+            <span className="header__userName">{user?.user?.user?.name}</span>
+            <p className="header__userSpecification">User</p>
+          </div>
           <Link to={`/${id}/user`}>
-            <div className="header-circle"></div>
+            <button className="header-circle">
+              <svg className="header__svg" width={"24px"} height={"24px"}></svg>
+            </button>
           </Link>
-          <div
-            className="button header-button"
+          <button
+            className="header__button--logout"
             onClick={() => setLoginUser({})}
           >
-            Logout
-          </div>
+            <svg className="header__svg" width={"24px"} height={"24px"}>
+              <LogoffIcon />
+            </svg>
+          </button>
         </div>
       </div>
     </header>

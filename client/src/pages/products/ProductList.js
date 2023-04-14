@@ -1,6 +1,6 @@
 import { Container, CardWrapper, ProductName } from "./ProductList.styled";
 
-export const ProductList = ({ id, products, onDelete }) => {
+export const ProductList = ({ products, onDelete }) => {
   return (
     <Container>
       {products?.map((product, index) => (
@@ -11,8 +11,8 @@ export const ProductList = ({ id, products, onDelete }) => {
               {product.productsName}
             </div>
             <div>
-              <p>qty:</p>
-              {product.qty}
+              <p>Tax:</p>
+              {product.productsTax.name || "0%"}
             </div>
             <div>
               <p>price:</p>
