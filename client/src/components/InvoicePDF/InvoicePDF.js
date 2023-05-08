@@ -96,7 +96,6 @@ const InvoicePDF = ({
   products,
   selectedProduct,
   selectedProductIndex,
-  handleProductChange,
 }) => {
   const generatePdf = async () => {
     const doc = (
@@ -337,13 +336,10 @@ const InvoicePDF = ({
     invoice.client.clientAddress || ""
   );
   const [selectedClient, setSelectedClient] = useState(invoice.client || "");
-  const [dueDate, setDueDate] = useState(
-    invoice.date.dueDate || new Date().toISOString().substring(0, 10)
-  ); // Load "dueDate" if invoice is editing or create new Date
-  const [invoiceDate, setInvoiceDate] = useState(
-    invoice.date.invoiceDate || new Date().toISOString().substring(0, 10)
-  ); // Load "invoiceDate" if invoice is editing or create new Date
+  const [dueDate, setDueDate] = useState(invoice.date?.dueDate);
+  const [invoiceDate, setInvoiceDate] = useState(invoice.date?.invoiceDate);
   const [total, setTotal] = useState(0);
+
   /*
     This code uses the useEffect hook to calculate the total amount of the products in an invoice 
     whenever the invoice.products.items array changes.
@@ -358,7 +354,6 @@ const InvoicePDF = ({
     This code demonstrates the use of the reduce method to perform a calculation on an array 
     and how to update the state of a React component using the setTotal function.
   */
- console.log(invoiceDate);
   useEffect(() => {
     let totalAmount = 0;
 
@@ -405,7 +400,7 @@ const InvoicePDF = ({
 
     setNewInvoice({ ...invoice, date: updateDate });
   };
-  
+
   /*
     handleClientChange: 
     This is a function used to handle the change in the selected client. 
@@ -513,7 +508,7 @@ const InvoicePDF = ({
               name="invoiceDate"
               className="input input-date w-35 fs-11"
               value={invoiceDate}
-              onChange={handleChange || invoiceDate}
+              onChange={handleChange}
             />
           </div>
           <div className="flex flex-end flex-ai gap-15">
@@ -690,7 +685,6 @@ const InvoicePDF = ({
           selectedProduct={selectedProduct}
           selectedProductIndex={selectedProductIndex}
           products={products}
-          handleProductChange={handleProductChange}
         />
       ))}
       <div className="flex">

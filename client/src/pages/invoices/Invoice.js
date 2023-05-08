@@ -4,9 +4,20 @@ import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 import CurrentMonthInvoices from "../currentMonthIvoices";
 import InvoicePDF from "../../components/InvoicePDF/InvoicePDF";
-
+/**
+ * This component displays the invoice list, form to add a new invoice, and the button to download an invoice as a PDF. 
+ * @component 
+ */
 const Invoices = () => {
   let { id } = useParams();
+ /**
+   * Represents a new invoice.
+   * @typedef {Object} NewInvoice
+   * @property {Object} user - The user who created the invoice
+   * @property {Object} client - The client whom the invoice is for
+   * @property {Array} products - The list of products included in the invoice
+   * @property {Object} date - The date information of the invoice, including the due date and the invoice date
+   */
 
   const [newInvoice, setNewInvoice] = useState({
     _id: Types.ObjectId(),
@@ -19,7 +30,7 @@ const Invoices = () => {
       items: [],
       totalAmount: 0,
     },
-    date: { dueDate: "", invoiceDate: "" },
+    date: { dueDate: new Date().toISOString().substring(0, 10), invoiceDate: new Date().toISOString().substring(0, 10) },
   });
   const [user, setUser] = useState({});
   const [currentMonthInvoices, setCurrentMonthInvoices] = useState(0);
@@ -110,37 +121,6 @@ const Invoices = () => {
     fetchInvoices();
   }, [id]);
 
-  const handleChange = (event) => {
-    const { name, value } = event.target;
-    if (name.includes("product")) {
-      setNewInvoice({
-        ...newInvoice,
-        products: {
-          ...newInvoice.products,
-          [name]: value,
-        },
-      });
-    } else if (name.includes("client")) {
-      setNewInvoice({
-        ...newInvoice,
-        client: {
-          ...newInvoice.client,
-          [name]: value,
-        },
-      });
-    } else if (name.includes("dueDate") || name.includes("invoiceDate")) {
-      setNewInvoice({
-        ...newInvoice,
-        date: {
-          ...newInvoice.date,
-          [name]: value,
-        },
-      });
-    } else {
-      setNewInvoice({ ...newInvoice, [name]: value });
-    }
-  };
-
   const handleClick = () => {
     if (isFormValid) {
       axios
@@ -192,7 +172,6 @@ const Invoices = () => {
       <InvoicePDF
         invoice={newInvoice}
         setNewInvoice={setNewInvoice}
-        handleChange={handleChange}
         clients={clients}
         products={products}
         selectedProduct={selectedProduct}
