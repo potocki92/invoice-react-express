@@ -6,6 +6,10 @@ import { ProductList } from "./ProductList";
 import { ProductForm  } from "../../components/ProductForm/ProductForm";
 import taxRate from "./taxRateArray";
 
+/**
+Component for managing products.
+@returns {JSX.Element} - Returns a JSX element containing product form and list components.
+*/
 const Products = () => {
   let { id } = useParams();
   const [newProduct, setNewProduct] = useState({
@@ -37,11 +41,20 @@ const Products = () => {
     fetchProducts();
   }, [id]);
 
+  /**
+  Updates the state of newProduct object when input values change.
+  @param {Object} event - The event object.
+  */
   const handleChange = (event) => {
     const { name, value } = event.target;
     setNewProduct({ ...newProduct, [name]: value });
   };
 
+  /**
+   * Updates the state of newProduct object when VAT rate changes.
+   * @param {Object} event - The event object. 
+   * @param {Number} index - The index of the selected VAT rate. 
+   */
   const handleVatChange = (event, index) => {
     const indexTarget = event.target.value;
     const selectedVatRate = taxRate[indexTarget];
@@ -51,6 +64,11 @@ const Products = () => {
       setNewProduct({ ...newProduct, productsTax: selectedVatRate });
     }
   };
+
+  /**
+   * Handles form submission and sends new product data to server.
+   * @param {Object} e - The event object. 
+   */
   const handleClick = (e) => {
     e.preventDefault();
     axios
@@ -69,6 +87,11 @@ const Products = () => {
       })
       .catch((err) => console.error(err));
   };
+
+  /**
+   * Deletes a product from the server and updates product list state.
+   * @param {String} productId - The ID of the product to be deleted. 
+   */
   const deleteProduct = (productId) => {
     axios
       .delete(`/${id}/products/${productId}`)

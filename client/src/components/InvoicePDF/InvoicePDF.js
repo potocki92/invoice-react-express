@@ -358,6 +358,7 @@ const InvoicePDF = ({
     This code demonstrates the use of the reduce method to perform a calculation on an array 
     and how to update the state of a React component using the setTotal function.
   */
+ console.log(invoiceDate);
   useEffect(() => {
     let totalAmount = 0;
 
@@ -404,6 +405,7 @@ const InvoicePDF = ({
 
     setNewInvoice({ ...invoice, date: updateDate });
   };
+  
   /*
     handleClientChange: 
     This is a function used to handle the change in the selected client. 
@@ -510,8 +512,8 @@ const InvoicePDF = ({
               type={"date"}
               name="invoiceDate"
               className="input input-date w-35 fs-11"
-              value={invoiceDate || ""}
-              onChange={handleChange}
+              value={invoiceDate}
+              onChange={handleChange || invoiceDate}
             />
           </div>
           <div className="flex flex-end flex-ai gap-15">
@@ -520,7 +522,7 @@ const InvoicePDF = ({
               type={"date"}
               name="dueDate"
               className="input input-date w-35 fs-11"
-              value={dueDate || ""}
+              value={dueDate}
               onChange={handleChange}
             />
           </div>

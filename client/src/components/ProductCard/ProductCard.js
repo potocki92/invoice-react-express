@@ -23,15 +23,6 @@ import "./ProductCard.css";
 **********************************************************************************************/
 ////////// KOMPONENT KLASOWY TEST
 
-
-
-
-
-
-
-
-
-
 // class ProductCard extends React.Component {
 //   constructor(props) {
 //     super(props);
@@ -165,7 +156,9 @@ import "./ProductCard.css";
 const ProductCard = (props) => {
   const [selectedProduct, setSelectedProduct] = useState("");
   const [productQty, setProductQty] = useState(props.product.productsQty || 1);
-  const [productPrice, setProductPrice] = useState(props.product.productsPrice || 1);
+  const [productPrice, setProductPrice] = useState(
+    props.product.productsPrice || 1
+  );
   const [productTax, setProductTax] = useState(props.product.productsTax || 0);
   const [productTaxRate, setProductTaxRate] = useState(
     props.product.productsRateTax || 0
@@ -173,7 +166,7 @@ const ProductCard = (props) => {
   const [amount, setAmount] = useState(1);
 
   console.table(productTax);
-/*
+  /*
   This function takes in two arguments, key and value, and updates the invoice object with the new value.
   The function first creates a new array of updatedProducts by iterating over the invoice.products.items array using the map method.
   For the current product, identified by the index, the function creates a new object with the updated key and value.
@@ -181,59 +174,60 @@ const ProductCard = (props) => {
   Finally, the function calls setNewInvoice with a new invoice object that merges the updated products array with the existing invoice object.
   This function is used in the component to update the products array of the invoice object whenever a user makes changes to a product's quantity or price.
 */
-const updatedProduct = (key, value) => {
-  const updatedProducts = props.invoice.products.items.map((product, i) => {
-    if (i === props.index) {
-      return {
-        ...product,
-        [key]: value,
-      };
-    }
-    return product;
-  });
-  props.setNewInvoice({
-    ...props.invoice,
-    products: { ...props.invoice.products, items: updatedProducts },
-  });
-};
-/*
+  const updatedProduct = (key, value) => {
+    const updatedProducts = props.invoice.products.items.map((product, i) => {
+      if (i === props.index) {
+        return {
+          ...product,
+          [key]: value,
+        };
+      }
+      return product;
+    });
+    props.setNewInvoice({
+      ...props.invoice,
+      products: { ...props.invoice.products, items: updatedProducts },
+    });
+  };
+  /*
   handleRemoveProduct:
   This is a function used to remove a product items from the invoice.
   It takes an index as an argument, removes the corresponding item from the "updateItems" array, and updates the state.
 */
-const handleRemoveProduct = () => {
-  const updateItems = [...props.invoice.products.items];
-  updateItems.splice(props.index, 1);
+  const handleRemoveProduct = () => {
+    const updateItems = [...props.invoice.products.items];
+    updateItems.splice(props.index, 1);
 
-  props.setNewInvoice({
-    ...props.invoice,
-    products: {
-      ...props.invoice.products,
-      items: updateItems,
-    },
-  });
-};
+    props.setNewInvoice({
+      ...props.invoice,
+      products: {
+        ...props.invoice.products,
+        items: updateItems,
+      },
+    });
+  };
 
-// Update amount for every change of productQty, productPrice, product.productsQty, product.productsPrice, productTaxRate or amount
-useEffect(() => {
-  setProductPrice(props.product.productsPrice);
-  setProductQty(props.product.productsQty);
+  // Update amount for every change of productQty, productPrice, product.productsQty, product.productsPrice, productTaxRate or amount
+  useEffect(() => {
+    setProductPrice(props.product.productsPrice);
+    setProductQty(props.product.productsQty);
 
-  const updateTaxRate = (productTax !== 1) ? productQty * productPrice * productTax.value : 0;
-  setProductTaxRate(updateTaxRate);
-  const updateAmount = productQty * productPrice + productTaxRate;
-  setAmount(updateAmount);
-  updatedProduct("amount", updateAmount);
-}, [
-  productQty,
-  productPrice,
-  props.product.productsQty,
-  props.product.productsPrice,
-  productTaxRate,
-  amount,
-]);
+    const updateTaxRate =
+      productTax !== 1 ? productQty * productPrice * productTax.value : 0;
+    setProductTaxRate(updateTaxRate);
+    const updateAmount = productQty * productPrice + productTaxRate;
+    setAmount(updateAmount);
+    updatedProduct("amount", updateAmount);
+  }, [
+    productQty,
+    productPrice,
+    props.product.productsQty,
+    props.product.productsPrice,
+    productTaxRate,
+    amount,
+  ]);
 
-/*
+  /*
   This code defines a function handleProductChange that is called when the user selects a product from a list.
   First, the function extracts the ID of the selected product from the event object and finds the corresponding product object in the products array.
   Then, it updates the state of the selectedProduct object with the name, quantity, and price of the selected product, and sets the amount to 0.
@@ -242,41 +236,41 @@ useEffect(() => {
   Then, the function updates the product at the specified index in the copied array with the selected product's name, quantity, price, and a zero amount.
   Finally, the function sets the state of the newInvoice object with the updated items array and the previous invoice object's products object using the spread operator.
   */
-const handleProductChange = (event) => {
-  const selectedProductId = event.target.value;
-  const selectedProduct = props.products.find(
-    (product) => product._id === selectedProductId
-  );
-  setSelectedProduct({
-    productsName: selectedProduct.productsName,
-    productsQty: selectedProduct.qty,
-    productsPrice: selectedProduct.productsPrice,
-    productsTax: selectedProduct.productsTax,
-    amount: selectedProduct.amount,
-  });
-  setProductPrice(selectedProduct.productsPrice);
-  setProductQty(selectedProduct.qty);
-  setProductTax(selectedProduct.productsTax);
+  const handleProductChange = (event) => {
+    const selectedProductId = event.target.value;
+    const selectedProduct = props.products.find(
+      (product) => product._id === selectedProductId
+    );
+    setSelectedProduct({
+      productsName: selectedProduct.productsName,
+      productsQty: selectedProduct.qty,
+      productsPrice: selectedProduct.productsPrice,
+      productsTax: selectedProduct.productsTax,
+      amount: selectedProduct.amount,
+    });
+    setProductPrice(selectedProduct.productsPrice);
+    setProductQty(selectedProduct.qty);
+    setProductTax(selectedProduct.productsTax);
 
-  const updateProduct = [...props.invoice.products.items]; // copy all products from invoice.products
+    const updateProduct = [...props.invoice.products.items]; // copy all products from invoice.products
 
-  // updates a specific product in an array of products
-  updateProduct[props.index] = {
-    productsName: selectedProduct.productsName,
-    productsQty: selectedProduct.qty,
-    productsPrice: selectedProduct.productsPrice,
-    productsTax: selectedProduct.productsTax,
-    amount: selectedProduct.amount,
+    // updates a specific product in an array of products
+    updateProduct[props.index] = {
+      productsName: selectedProduct.productsName,
+      productsQty: selectedProduct.qty,
+      productsPrice: selectedProduct.productsPrice,
+      productsTax: selectedProduct.productsTax,
+      amount: selectedProduct.amount,
+    };
+
+    // updates the products object of the invoice object
+    props.setNewInvoice({
+      ...props.invoice,
+      products: { ...props.invoice.products, items: updateProduct },
+    });
   };
 
-  // updates the products object of the invoice object
-  props.setNewInvoice({
-    ...props.invoice,
-    products: { ...props.invoice.products, items: updateProduct },
-  });
-};
-
-/*
+  /*
   This code defines a function called handleChange which takes an event object as an argument.
   Inside the function, the name and value properties of the event target are destructured and assigned to constants.
 
@@ -290,18 +284,18 @@ const handleProductChange = (event) => {
   Overall, this function updates the productQty or productPrice state when the corresponding input is changed,
   and then updates the corresponding product in the invoice by calling the updatedProduct function.
 */
-const handleChange = (event) => {
-  const { name, value } = event.target;
+  const handleChange = (event) => {
+    const { name, value } = event.target;
 
-  if (name === "productsQty") {
-    setProductQty(value);
-    updatedProduct("productsQty", value);
-  }
-  if (name === "productsPrice") {
-    setProductPrice(value);
-    updatedProduct("productsPrice", value);
-  }
-};
+    if (name === "productsQty") {
+      setProductQty(value);
+      updatedProduct("productsQty", value);
+    }
+    if (name === "productsPrice") {
+      setProductPrice(value);
+      updatedProduct("productsPrice", value);
+    }
+  };
 
   return (
     <div className="view row flex b-b p-10 flex-align relative">

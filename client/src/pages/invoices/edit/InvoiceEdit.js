@@ -113,6 +113,7 @@ const InvoiceEdit = () => {
   const handleSave = async () => {
     try {
       const response = await axios.put(`/${id}/invoice/${invoiceId}`, invoice);
+      console.log(invoice);
       console.log("Invoice updated successfully: ", response);
     } catch (error) {
       console.error(error);

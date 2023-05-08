@@ -1,11 +1,10 @@
-/*
-    It takes props as input, which include an object called "input" containing information about the input field,
-     such as its name, value, type, placeholder, and whether it is required. The component renders an HTML input 
-     element with these properties, along with a label showing the input field's name. When the value of the input 
-     field changes, the handleChange function is called. This component is meant to be reusable for multiple input 
-     fields in a form.
+/**
+The InputField component is used to display a form field
+@param {Object} props - Object containing input parameters
+@param {Object} props.input - Object containing form field properties such as name, className, typeText, value, placeholder, and required
+@param {Function} props.handleChange - Function handling changes in the form fields
+@returns {JSX.Element} - Returns a JSX element representing the form field
 */
-
 const InputField = (props) => {
   return (
     <div className="form__group">
