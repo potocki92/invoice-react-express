@@ -18,7 +18,8 @@
     "html2canvas": "^1.4.1",
     "jspdf": "^2.5.1",
     "moment": "^2.29.4",
-    "node": "^18.13.0"
+    "node": "^18.13.0",
+    "react-to-pdf": "^0.0.14"
   },
   "devDependencies": {
     "concurrently": "^7.6.0"

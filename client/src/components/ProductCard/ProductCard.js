@@ -183,7 +183,7 @@ const ProductCard = (props) => {
       }
       return product;
     });
-    console.log(key, value, updatedProducts);
+    console.log(updatedProducts);
     props.setNewInvoice({
       ...props.invoice,
       products: { ...props.invoice.products, items: updatedProducts },
@@ -214,7 +214,6 @@ const ProductCard = (props) => {
 
     const updateTaxRate =
       productTax !== 1 ? productQty * productPrice * productTax.value : 0;
-    console.log(updateTaxRate);
     setProductTaxRate(updateTaxRate);
     const updateAmount = productQty * productPrice + productTaxRate;
     setAmount(updateAmount);

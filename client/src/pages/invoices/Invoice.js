@@ -138,7 +138,6 @@ const Invoices = () => {
       }
     };
     fetchInvoices();
-
   }, [id]);
   /**
   Handles the click event of the "Create Invoice" button.
@@ -197,15 +196,16 @@ const Invoices = () => {
           </Link>
         </div>
       </div>
-      <InvoicePDF
-        invoice={newInvoice}
-        setNewInvoice={setNewInvoice}
-        clients={clients}
-        products={products}
-        selectedProduct={selectedProduct}
-        selectedProductIndex={selectedProductIndex}
-      />
-
+      <div className="invoice__content">
+        <InvoicePDF
+          invoice={newInvoice}
+          setNewInvoice={setNewInvoice}
+          clients={clients}
+          products={products}
+          selectedProduct={selectedProduct}
+          selectedProductIndex={selectedProductIndex}
+        />
+      </div>
       <Link
         to={`/${id}`}
         // sprawdza czy wszystkie inputy zostały uzupełnione, jeżeli tak to link zadziała
