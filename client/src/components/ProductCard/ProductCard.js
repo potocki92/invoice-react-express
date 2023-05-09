@@ -165,7 +165,6 @@ const ProductCard = (props) => {
   );
   const [amount, setAmount] = useState(1);
 
-  console.table(productTax);
   /*
   This function takes in two arguments, key and value, and updates the invoice object with the new value.
   The function first creates a new array of updatedProducts by iterating over the invoice.products.items array using the map method.
@@ -184,6 +183,7 @@ const ProductCard = (props) => {
       }
       return product;
     });
+    console.log(key, value, updatedProducts);
     props.setNewInvoice({
       ...props.invoice,
       products: { ...props.invoice.products, items: updatedProducts },
@@ -214,9 +214,11 @@ const ProductCard = (props) => {
 
     const updateTaxRate =
       productTax !== 1 ? productQty * productPrice * productTax.value : 0;
+    console.log(updateTaxRate);
     setProductTaxRate(updateTaxRate);
     const updateAmount = productQty * productPrice + productTaxRate;
     setAmount(updateAmount);
+    updatedProduct("productsRateTax", updateTaxRate);
     updatedProduct("amount", updateAmount);
   }, [
     productQty,
@@ -246,7 +248,6 @@ const ProductCard = (props) => {
       productsQty: selectedProduct.qty,
       productsPrice: selectedProduct.productsPrice,
       productsTax: selectedProduct.productsTax,
-      amount: selectedProduct.amount,
     });
     setProductPrice(selectedProduct.productsPrice);
     setProductQty(selectedProduct.qty);
@@ -260,7 +261,6 @@ const ProductCard = (props) => {
       productsQty: selectedProduct.qty,
       productsPrice: selectedProduct.productsPrice,
       productsTax: selectedProduct.productsTax,
-      amount: selectedProduct.amount,
     };
 
     // updates the products object of the invoice object
@@ -296,7 +296,6 @@ const ProductCard = (props) => {
       updatedProduct("productsPrice", value);
     }
   };
-
   return (
     <div className="view row flex b-b p-10 flex-align relative">
       <div className="view w-25 p-4-8 flex-align flex">

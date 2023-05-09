@@ -5,12 +5,12 @@ import axios from "axios";
 import CurrentMonthInvoices from "../currentMonthIvoices";
 import InvoicePDF from "../../components/InvoicePDF/InvoicePDF";
 /**
- * This component displays the invoice list, form to add a new invoice, and the button to download an invoice as a PDF. 
- * @component 
+ * This component displays the invoice list, form to add a new invoice, and the button to download an invoice as a PDF.
+ * @component
  */
 const Invoices = () => {
   let { id } = useParams();
- /**
+  /**
    * Represents a new invoice.
    * @typedef {Object} NewInvoice
    * @property {Object} user - The user who created the invoice
@@ -30,7 +30,10 @@ const Invoices = () => {
       items: [],
       totalAmount: 0,
     },
-    date: { dueDate: new Date().toISOString().substring(0, 10), invoiceDate: new Date().toISOString().substring(0, 10) },
+    date: {
+      dueDate: new Date().toISOString().substring(0, 10),
+      invoiceDate: new Date().toISOString().substring(0, 10),
+    },
   });
   const [user, setUser] = useState({});
   const [currentMonthInvoices, setCurrentMonthInvoices] = useState(0);
@@ -41,7 +44,10 @@ const Invoices = () => {
   const [products, setProducts] = useState([]);
 
   const [isFormValid, setIsFormValid] = useState(false);
-
+  /**
+   * Validates whether the new invoice data is valid.
+   * @returns {boolean} - true if the form data is valid, false otherwise.
+   */
   const validateForm = () => {
     if (
       newInvoice.invoiceNumber === "" ||
@@ -56,7 +62,10 @@ const Invoices = () => {
     }
     return true;
   };
-  // Load user
+  /**
+   * Loads the user who created the invoice.
+   * @returns {void}
+   */
   useEffect(() => {
     const fetchUser = async () => {
       try {
@@ -72,7 +81,10 @@ const Invoices = () => {
     };
     fetchUser();
   }, [id]);
-  // Load all clients ro setClients
+  /**
+   * Loads all clients to setClients.
+   * @returns {void}
+   */
   useEffect(() => {
     const fetchClients = async () => {
       try {
@@ -84,8 +96,10 @@ const Invoices = () => {
     };
     fetchClients();
   }, [id]);
-
-  // Load all products to setProducts
+  /**
+   * Loads all products to setProducts.
+   * @returns {void}
+   */
   useEffect(() => {
     const fetchProducts = async () => {
       try {
@@ -98,11 +112,16 @@ const Invoices = () => {
     fetchProducts();
   }, [id]);
 
-  // Generate Invoice Number INV-MM/YY/NN
+  /**
+   * Generates an invoice number in the format INV-MM/YY/NN.
+  @param {number} currentMonthInvoices - The current month's total number of invoices.
+  @returns {string} - The generated invoice number.
+  */
   const invoiceNumber = new CurrentMonthInvoices(
     currentMonthInvoices
   ).generateInvoiceNumber(currentMonthInvoices);
 
+  // Sets the new invoice state with the generated invoice number
   useEffect(() => {
     setNewInvoice((prevInvoice) => ({ ...prevInvoice, invoiceNumber }));
   }, [currentMonthInvoices]);
@@ -119,8 +138,16 @@ const Invoices = () => {
       }
     };
     fetchInvoices();
-  }, [id]);
 
+  }, [id]);
+  /**
+  Handles the click event of the "Create Invoice" button.
+  Sends a request to the server to add a new invoice with the data from the new invoice state.
+  Updates the allInvoices state with the new invoice data.
+  Resets the newInvoice state to empty fields.
+  Increments the currentMonthInvoices state by 1.
+  Displays an alert if the form is not valid.
+  */
   const handleClick = () => {
     if (isFormValid) {
       axios
@@ -154,6 +181,7 @@ const Invoices = () => {
     }
   };
 
+  //  Validates the new invoice form and sets the isFormValid state to true if it is valid.
   useEffect(() => {
     setIsFormValid(validateForm());
   }, [newInvoice]);

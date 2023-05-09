@@ -2,6 +2,12 @@ import axios from "axios";
 import moment from "moment";
 import { Component, useEffect } from "react";
 
+/**
+A class component that generates an invoice number in the format INV-MM/YY/NN,
+fetches the number of invoices in the current month from the server, and updates
+the invoice number in the new invoice form.
+@extends React.Component
+*/
 class CurrentMonthInvoices extends Component {
   constructor(props) {
     super(props);
@@ -10,7 +16,11 @@ class CurrentMonthInvoices extends Component {
     };
   }
 
-  // Generate Invoice Number INV-MM/YY/NN
+  /**
+  Method that generates an invoice number in the format INV-MM/YY/NN.
+  @param {number} currentMonthInvoices - The current month's number of invoices.
+  @returns {string} - The generated invoice number in the format INV-MM/YY/NN.
+  */
   generateInvoiceNumber = (currentMonthInvoices) => {
     const month = moment().format("MM"); // actual month in format MM
     const year = moment().format("YY"); // actual year in format YY
@@ -33,6 +43,10 @@ class CurrentMonthInvoices extends Component {
     }
   }
 
+  /**
+  Method that fetches the number of invoices in the current month from the server
+  and updates the currentMonthInvoices state.
+  */
   fetchCurrentMonthInvoices = () => {
     const { id, setCurrentMonthInvoices } = this.props;
     const month = moment().format("MM");
