@@ -296,71 +296,52 @@ const ProductCard = (props) => {
     }
   };
   return (
-    <div className="view row flex b-b p-10 flex-align relative">
-      <div className="view w-25 p-4-8 flex-align flex">
-        {props.products.length ? (
-          <div className="flex">
-            <select
-              className="custom-select"
-              value={selectedProduct.productsName || ""}
-              onChange={(event) => handleProductChange(event)}
-            >
-              <option value={""}>
-                {props.product.productsName
-                  ? props.product.productsName
-                  : "Select the product"}
+    <div>
+      {props.products.length ? (
+        <div className="flex">
+          <select
+            value={selectedProduct.productsName || ""}
+            onChange={(event) => handleProductChange(event)}
+          >
+            <option value={""}>
+              {props.product.productsName
+                ? props.product.productsName
+                : "Select the product"}
+            </option>
+            {props.products.map((product) => (
+              <option key={product._id} value={product._id}>
+                {product.productsName}
               </option>
-              {props.products.map((product) => (
-                <option key={product._id} value={product._id}>
-                  {product.productsName}
-                </option>
-              ))}
-            </select>
-          </div>
-        ) : (
-          <div></div>
-        )}
-      </div>
-      <div className="view w-22 p-4-8 flex">
-        <div className="view w-50 p-4-8 pb-10">
-          <input
-            className="input dark right p-0"
-            name="productsQty"
-            placeholder="1"
-            value={productQty}
-            onChange={handleChange}
-          />
+            ))}
+          </select>
         </div>
-        <div className="view w-50 p-4-8 pb-10 ">
-          <input
-            className="input dark right p-0"
-            name="productsTax"
-            placeholder="0"
-            value={productTax.name || "0%"}
-            onChange={handleChange}
-          />
-        </div>
-      </div>
-      <div className="view w-35 p-4-8 flex">
-        <div className="view w-50 p-4-8 pb-10 ">
-          <input
-            className="input dark right p-0"
-            name="productsPrice"
-            placeholder="0000.00"
-            value={productPrice}
-            onChange={handleChange}
-          />
-        </div>
-        <div className="view w-50 p-4-8 pb-10">
-          <input
-            className="input dark right p-0"
-            name="productsRateTax"
-            placeholder="0000.00"
-            value={productTaxRate || 0}
-            onChange={handleChange}
-          />
-        </div>
-      </div>
+      ) : (
+        <div></div>
+      )}
+      <input
+        name="productsQty"
+        placeholder="1"
+        value={productQty}
+        onChange={handleChange}
+      />
+      <input
+        name="productsTax"
+        placeholder="0"
+        value={productTax.name || "0%"}
+        onChange={handleChange}
+      />
+      <input
+        name="productsPrice"
+        placeholder="0000.00"
+        value={productPrice}
+        onChange={handleChange}
+      />
+      <input
+        name="productsRateTax"
+        placeholder="0000.00"
+        value={productTaxRate || 0}
+        onChange={handleChange}
+      />
       <div className="view w-18 p-4-8 pb-10 right">
         <span className="span dark">{amount}</span>
       </div>

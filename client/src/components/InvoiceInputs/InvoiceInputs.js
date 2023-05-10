@@ -205,158 +205,101 @@ const InvoiceInputs = ({
 
   return (
     <div className="flex col">
-      <div className="view flex flex-end">
-        <div className="view w-50">
-          <h1 className="fs-45 bold right">INVOICE</h1>
-          <p className="fs-20 right">{invoice.invoiceNumber}</p>
-          <div className="flex flex-end flex-ai gap-15">
-            <p className="">Invoice Date:</p>
-            <input
-              type={"date"}
-              name="invoiceDate"
-              className="input input-date w-35 fs-11"
-              value={invoiceDate}
-              onChange={handleChange}
-            />
-          </div>
-          <div className="flex flex-end flex-ai gap-15">
-            <p className="">Due Date:</p>
-            <input
-              type={"date"}
-              name="dueDate"
-              className="input input-date w-35 fs-11"
-              value={dueDate}
-              onChange={handleChange}
-            />
-          </div>
-        </div>
+      <div>
+        <h1>INVOICE</h1>
+        <p>{invoice.invoiceNumber}</p>
       </div>
-      <div className="view flex m-t">
-        <div className="view w-50">
-          <h2 className="fs-20 bold p-color">Your Company</h2>
-          <input
-            type={"text"}
-            className="input"
-            placeholder="Your Name"
-            value={invoice.user.name}
-          />
-          <input
-            type={"tel"}
-            className="input"
-            placeholder="Your Name"
-            value={invoice.user.phone}
-          />
-          <input
-            type={"email"}
-            className="input"
-            placeholder="Your Name"
-            value={invoice.user.email}
-          />
-          <input
-            type={"text"}
-            className="input"
-            placeholder="NIP"
-            value={invoice.user.NIP}
-          />
-          <input
-            type={"text"}
-            className="input"
-            placeholder="REGON"
-            value={invoice.user.REGON}
-          />
-          <input
-            type={"text"}
-            className="input"
-            placeholder="Company's Address"
-            value={invoice.user.address.street}
-          />
-          <input
-            type={"text"}
-            className="input"
-            placeholder="City, Postal Code"
-            value={`${invoice.user.address.postalCode}, ${invoice.user.address.city}`}
-          />
-        </div>
-        <div className="view w-50">
-          <h2 className="fs-20 bold p-color">Bill to</h2>
-          <div>
-            {clients.length ? (
-              <select
-                className="custom-select"
-                value={selectedClient}
-                onChange={(event) => handleClientChange(event)}
-              >
-                <option value={""}>
-                  {clientName ? invoice.client.clientName : "Select the client"}
+      <div>
+        <p>Invoice Date:</p>
+        <input
+          type="date"
+          name="invoiceDate"
+          value={invoiceDate}
+          onChange={handleChange}
+        />
+      </div>
+      <div>
+        <p>Due Date:</p>
+        <input
+          type="date"
+          name="dueDate"
+          value={dueDate}
+          onChange={handleChange}
+        />
+      </div>
+
+      <div>
+        <h2>Bill to:</h2>
+        <div>
+          {clients.length ? (
+            <select
+              value={selectedClient}
+              onChange={(event) => handleClientChange(event)}
+            >
+              <option value={""}>
+                {clientName ? invoice.client.clientName : "Select the client"}
+              </option>
+              {clients.map((client) => (
+                <option key={client._id} value={client._id}>
+                  {client.clientName}
                 </option>
-                {clients.map((client) => (
-                  <option key={client._id} value={client._id}>
-                    {client.clientName}
-                  </option>
-                ))}
-              </select>
-            ) : (
-              <div></div>
-            )}
-          </div>
+              ))}
+            </select>
+          ) : (
+            <div></div>
+          )}
+        </div>
+        <input
+          type={"tel"}
+          name={"clientPhone"}
+          placeholder="Client Phone"
+          value={clientPhone}
+          onChange={handleChange}
+        />
+        <input
+          type={"email"}
+          name={"clientEmail"}
+          placeholder="Client Email"
+          value={clientEmail}
+          onChange={handleChange}
+        />
+        <input
+          type={"text"}
+          name={"clientNip"}
+          placeholder="NIP"
+          value={clientNip}
+          onChange={handleChange}
+        />
+        <input
+          type={"text"}
+          name={"clientRegon"}
+          placeholder="REGON"
+          value={clientRegon}
+          onChange={handleChange}
+        />
+        <input
+          type={"text"}
+          name={"clientAddress"}
+          placeholder="Company's Address"
+          value={clientAddress}
+          onChange={handleChange}
+        />
+        <div className="flex w-98">
           <input
-            type={"tel"}
-            name={"clientPhone"}
-            className="input"
-            placeholder="Client Phone"
-            value={clientPhone}
-            onChange={handleChange}
-          />
-          <input
-            type={"email"}
-            name={"clientEmail"}
-            className="input"
-            placeholder="Client Email"
-            value={clientEmail}
+            type={"text"}
+            name={"clientPostal"}
+            placeholder="Postal"
+            value={clientPostal}
             onChange={handleChange}
           />
           <input
             type={"text"}
-            name={"clientNip"}
-            className="input"
-            placeholder="NIP"
-            value={clientNip}
+            name={"clientCity"}
+            
+            placeholder="City"
+            value={clientCity}
             onChange={handleChange}
           />
-          <input
-            type={"text"}
-            name={"clientRegon"}
-            className="input"
-            placeholder="REGON"
-            value={clientRegon}
-            onChange={handleChange}
-          />
-          <input
-            type={"text"}
-            name={"clientAddress"}
-            className="input"
-            placeholder="Company's Address"
-            value={clientAddress}
-            onChange={handleChange}
-          />
-          <div className="flex w-98">
-            <input
-              type={"text"}
-              name={"clientPostal"}
-              className="input w-40"
-              placeholder="Postal"
-              value={clientPostal}
-              onChange={handleChange}
-            />
-            <input
-              type={"text"}
-              name={"clientCity"}
-              className="input"
-              placeholder="City"
-              value={clientCity}
-              onChange={handleChange}
-            />
-          </div>
         </div>
       </div>
 
@@ -383,7 +326,7 @@ const InvoiceInputs = ({
         <span className="span bold">Notes</span>
         <textarea
           name={"notes"}
-          className="input w-100 h-50 t-area"
+          className="w-100 h-50 t-area"
           value={notes}
           onChange={handleChangeNotes}
         ></textarea>
