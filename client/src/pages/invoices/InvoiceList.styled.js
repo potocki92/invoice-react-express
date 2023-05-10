@@ -31,3 +31,8 @@ export const ProductName = styled.h3`
   margin-bottom: 0;
   color: #fff;
 `;
+
+export const StyledBox = styled.div`
+  margin-bottom: 1.9rem;
+  width: 100%
+`;

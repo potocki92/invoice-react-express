@@ -6,18 +6,22 @@ import { InvoiceList } from "./invoices/InvoiceList";
 export const Home = () => {
   let { id } = useParams();
   const [allInvoices, setAllInvoices] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchInvoices = async () => {
       try {
         const response = await axios.get(`/${id}/invoices`);
         setAllInvoices(response.data);
+        setIsLoading(false);
       } catch (error) {
         console.error(error);
+        setIsLoading(false);
       }
     };
     fetchInvoices();
   }, [id]);
+
   const deleteProduct = (invoiceId) => {
     axios
       .delete(`/${id}/invoices/${invoiceId}`)
@@ -37,7 +41,11 @@ export const Home = () => {
           {allInvoices && <p>There are total {allInvoices.length} invoices</p>}
         </div>
       </div>
-      <InvoiceList id={id} invoices={allInvoices} onDelete={deleteProduct} />
+      {isLoading ? (
+        <p>Loading...</p>
+      ) : (
+        <InvoiceList id={id} invoices={allInvoices} onDelete={deleteProduct} />
+      )}
     </main>
   );
 };

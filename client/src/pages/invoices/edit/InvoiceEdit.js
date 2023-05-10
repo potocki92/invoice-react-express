@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import InvoicePDF from "../../../components/InvoicePDF/InvoicePDF";
+import { StyledBox } from "../InvoiceList.styled";
 
 const InvoiceEdit = () => {
   let { id, invoiceId } = useParams();
@@ -125,7 +126,7 @@ const InvoiceEdit = () => {
   }
   return (
     <div className="container section is-flex col">
-      <div className="details__box">
+      <StyledBox>
         <div className="invoice__home-logo">
           <h1>Edit Invoice {invoice._id}</h1>
           <p>Invoice number: {invoice.invoiceNumber}</p>
@@ -133,15 +134,17 @@ const InvoiceEdit = () => {
             <button className="button back_button">Go Back</button>
           </Link>
         </div>
+      </StyledBox>
+      <div className="invoice__content col">
+        <InvoicePDF
+          invoice={invoice}
+          setNewInvoice={setInvoice}
+          handleChange={handleChange}
+          clients={clients}
+          products={products}
+          selectedProduct={selectedProduct}
+        />
       </div>
-      <InvoicePDF
-        invoice={invoice}
-        setNewInvoice={setInvoice}
-        handleChange={handleChange}
-        clients={clients}
-        products={products}
-        selectedProduct={selectedProduct}
-      />
       <button className="button" onClick={handleSave}>
         Save
       </button>

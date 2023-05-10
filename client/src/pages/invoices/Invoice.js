@@ -4,6 +4,8 @@ import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 import CurrentMonthInvoices from "../currentMonthIvoices";
 import InvoicePDF from "../../components/InvoicePDF/InvoicePDF";
+import InvoiceInputs from "../../components/InvoiceInputs/InvoiceInputs";
+import { StyledBox } from "./InvoiceList.styled";
 /**
  * This component displays the invoice list, form to add a new invoice, and the button to download an invoice as a PDF.
  * @component
@@ -187,7 +189,7 @@ const Invoices = () => {
 
   return (
     <div className="container section is-flex col">
-      <div className="details__box">
+      <StyledBox>
         <div className="invoice__home-logo">
           <h1>Invoice</h1>
           {allInvoices && <p>There are total {allInvoices.length} invoices</p>}
@@ -195,8 +197,16 @@ const Invoices = () => {
             <button className="button back_button">Go Back</button>
           </Link>
         </div>
-      </div>
+      </StyledBox>
       <div className="invoice__content">
+        <InvoiceInputs
+          invoice={newInvoice}
+          setNewInvoice={setNewInvoice}
+          clients={clients}
+          products={products}
+          selectedProduct={selectedProduct}
+          selectedProductIndex={selectedProductIndex}
+        />
         <InvoicePDF
           invoice={newInvoice}
           setNewInvoice={setNewInvoice}
