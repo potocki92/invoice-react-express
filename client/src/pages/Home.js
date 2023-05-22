@@ -1,17 +1,26 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import axios from "axios";
-import { InvoiceList } from "./invoices/InvoiceList";
+import axios from "../utils/axiosConfig";
+import InvoiceList from "./invoices/InvoiceList";
 
-export const Home = () => {
+const Home = () => {
   let { id } = useParams();
   const [allInvoices, setAllInvoices] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const token = localStorage.getItem("token");
+  const getUserFromLocalStorage = localStorage.getItem("user");
+  const parsedUser = JSON.parse(getUserFromLocalStorage);
+  const userId = parsedUser.id;
 
   useEffect(() => {
     const fetchInvoices = async () => {
       try {
-        const response = await axios.get(`/${id}/invoices`);
+        const response = await axios.get(`/invoices`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            UserId: userId,
+          },
+        });
         setAllInvoices(response.data);
         setIsLoading(false);
       } catch (error) {
@@ -20,11 +29,16 @@ export const Home = () => {
       }
     };
     fetchInvoices();
-  }, [id]);
+  }, []);
 
   const deleteProduct = (invoiceId) => {
     axios
-      .delete(`/${id}/invoices/${invoiceId}`)
+      .delete(`/invoice/${invoiceId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          UserId: userId,
+        },
+      })
       .then((res) => {
         console.log(res.data);
         setAllInvoices(
@@ -49,3 +63,5 @@ export const Home = () => {
     </main>
   );
 };
+
+export default Home;

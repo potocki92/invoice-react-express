@@ -28,4 +28,4 @@ class ClientForm extends React.Component {
   }
 }
 
-export { ClientForm };
+export default ClientForm;

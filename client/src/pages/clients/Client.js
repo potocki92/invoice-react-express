@@ -2,10 +2,10 @@
 import { Types } from "mongoose";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import axios from "axios";
-import { ClientCard } from "../../components/ClientCard/ClientCard";
+import axios from "../../utils/axiosConfig";
+import ClientCard from "../../components/ClientCard/ClientCard";
 import "./Client.css";
-import { ClientForm } from "../../components/ClientForm/ClientForm";
+import ClientForm from "../../components/ClientForm/ClientForm";
 /* 
   This function defines the main Client component, 
   which fetches all clients data for the current user from the database, 
@@ -25,6 +25,10 @@ const Client = () => {
     clientPostal: "",
     clientAddress: "",
   });
+  const token = localStorage.getItem("token");
+  const getUserFromLocalStorage = localStorage.getItem("user");
+  const parsedUser = JSON.parse(getUserFromLocalStorage);
+  const userId = parsedUser.id;
   /* This line defines the initial state for all clients, either by retrieving them from local storage, or setting an empty array */
   const [allClients, setAllClients] = useState(
     JSON.parse(localStorage.getItem("clients")) || []
@@ -37,7 +41,12 @@ const Client = () => {
   useEffect(() => {
     const fetchClients = async () => {
       try {
-        const response = await axios.get(`/${id}/clients`);
+        const response = await axios.get(`/clients`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            UserId: userId,
+          },
+        });
         setAllClients(response.data);
       } catch (error) {
         console.error(error);
@@ -54,7 +63,12 @@ const Client = () => {
   const handleClick = (e) => {
     e.preventDefault();
     axios
-      .post(`/${id}/addClient`, newClient)
+      .post(`/addClient`, newClient, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          UserId: userId,
+        },
+      })
       .then((res) => {
         console.log(res.data);
         setAllClients([...allClients, newClient]);
@@ -75,7 +89,12 @@ const Client = () => {
   /* This function deletes a client from the database when the 'Delete' button is clicked */
   const deleteClient = (clientId) => {
     axios
-      .delete(`/${id}/clients/${clientId}`)
+      .delete(`/clients/${clientId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          UserId: userId,
+        },
+      })
       .then((res) => {
         console.log(res.data);
         setAllClients(allClients.filter((client) => client._id !== clientId));
@@ -91,7 +110,7 @@ const Client = () => {
         <h1>Customers</h1>
         {allClients && <p>There are total {allClients.length} clients</p>}
       </div>
-      <Link to={`/${id}`}>
+      <Link to={`/`}>
         <button className="button back_button">Go Back</button>
       </Link>
 

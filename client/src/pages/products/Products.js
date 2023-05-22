@@ -1,9 +1,9 @@
 import { Types } from "mongoose";
 import React, { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
-import axios from "axios";
-import { ProductList } from "./ProductList";
-import { ProductForm  } from "../../components/ProductForm/ProductForm";
+import axios from "../../utils/axiosConfig";
+import ProductList from "./ProductList";
+import ProductForm from "../../components/ProductForm/ProductForm";
 import taxRate from "./taxRateArray";
 
 /**
@@ -20,7 +20,10 @@ const Products = () => {
     amount: 0,
     productsTax: 1,
   });
-
+  const token = localStorage.getItem("token");
+  const getUserFromLocalStorage = localStorage.getItem("user");
+  const parsedUser = JSON.parse(getUserFromLocalStorage);
+  const userId = parsedUser.id;
   const [allProducts, setAllProducts] = useState(
     JSON.parse(localStorage.getItem("products")) || []
   );
@@ -32,7 +35,12 @@ const Products = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axios.get(`/${id}/products`);
+        const response = await axios.get(`/products`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            UserId: userId,
+          },
+        });
         setAllProducts(response.data);
       } catch (error) {
         console.error(error);
@@ -52,8 +60,8 @@ const Products = () => {
 
   /**
    * Updates the state of newProduct object when VAT rate changes.
-   * @param {Object} event - The event object. 
-   * @param {Number} index - The index of the selected VAT rate. 
+   * @param {Object} event - The event object.
+   * @param {Number} index - The index of the selected VAT rate.
    */
   const handleVatChange = (event, index) => {
     const indexTarget = event.target.value;
@@ -67,12 +75,17 @@ const Products = () => {
 
   /**
    * Handles form submission and sends new product data to server.
-   * @param {Object} e - The event object. 
+   * @param {Object} e - The event object.
    */
   const handleClick = (e) => {
     e.preventDefault();
     axios
-      .post(`/${id}/addProduct`, newProduct)
+      .post(`/addProduct`, newProduct, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          UserId: userId,
+        },
+      })
       .then((res) => {
         console.log(res.data, newProduct);
         setAllProducts([...allProducts, newProduct]); // aktualizujemy stan listy produktów
@@ -90,11 +103,16 @@ const Products = () => {
 
   /**
    * Deletes a product from the server and updates product list state.
-   * @param {String} productId - The ID of the product to be deleted. 
+   * @param {String} productId - The ID of the product to be deleted.
    */
   const deleteProduct = (productId) => {
     axios
-      .delete(`/${id}/products/${productId}`)
+      .delete(`/products/${productId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          UserId: userId,
+        },
+      })
       .then((res) => {
         console.log(res.data);
         setAllProducts(
@@ -110,11 +128,11 @@ const Products = () => {
         <h1>Products</h1>
         {allProducts && <p>There are total {allProducts.length} products</p>}
       </div>
-      <Link to={`/${id}`}>
+      <Link to={`/`}>
         <button className="button back_button">Go Back</button>
       </Link>
 
-      <ProductForm 
+      <ProductForm
         newProduct={newProduct}
         taxRate={taxRate}
         handleVatChange={handleVatChange}

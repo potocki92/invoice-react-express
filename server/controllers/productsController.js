@@ -23,6 +23,7 @@ export const addProduct = async (req, res) => {
 
 // GET
 export const getProducts = async (req, res) => {
+  
   try {
     const user = await User.findById(req.params.id);
     if (!user) {

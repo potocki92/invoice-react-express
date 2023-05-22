@@ -7,6 +7,11 @@ import { ReactComponent as UserIcon } from "../../assets/images/svg/user.svg";
 const Header = ({ setLoginUser }) => {
   let { id } = useParams();
   const [user, setItems] = useState([]);
+
+  const handleLogout = () => {
+    localStorage.removeItem("token")
+    setLoginUser({})
+  }
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("user"));
     if (user) {
@@ -21,14 +26,14 @@ const Header = ({ setLoginUser }) => {
             <span className="header__userName">{user?.user?.user?.name}</span>
             <p className="header__userSpecification">User</p>
           </div>
-          <Link to={`/${id}/user`}>
+          <Link to={`/user`}>
             <button className="header-circle">
               <svg className="header__svg" width={"24px"} height={"24px"}></svg>
             </button>
           </Link>
           <button
             className="header__button--logout"
-            onClick={() => setLoginUser({})}
+            onClick={() => handleLogout()}
           >
             <svg className="header__svg" width={"24px"} height={"24px"}>
               <LogoffIcon />

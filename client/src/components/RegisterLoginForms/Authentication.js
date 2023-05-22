@@ -1,19 +1,13 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import LoginForm from "./LoginForm/LoginForm";
 import Register from "./RegisterForm/RegisterForm";
 import { useNavigate } from "react-router-dom";
 import { CSSTransition } from "react-transition-group";
 import "./Authentication.css";
+import axios from "../../utils/axiosConfig";
 
 const Authentication = ({ setLoginUser }) => {
   const [showRegister, setShowRegister] = useState(true);
-  const navigation = useNavigate();
-
-  const handleLoginSuccess = (userId) => {
-    setLoginUser(userId);
-    navigation(`/${userId._id}`);
-  };
-
   return (
     <div className="authentication-container is-flex">
       <CSSTransition
@@ -25,7 +19,7 @@ const Authentication = ({ setLoginUser }) => {
       >
         <LoginForm
           setShowRegister={setShowRegister}
-          setLoginUser={handleLoginSuccess}
+          setLoginUser={setLoginUser}
         />
       </CSSTransition>
       <CSSTransition

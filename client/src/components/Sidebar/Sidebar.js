@@ -13,7 +13,7 @@ const Sidebar = () => {
       <nav className="sidebar__navlink">
         <ul className="sidebar__list">
           <li className="sidebar__item">
-            <Link to={`/${id}`}>
+            <Link to={`/`}>
               <button className="sidebar__button">
                 <svg className="sidebar__svg" width={"32px"} height={"32px"}>
                   <DashboardIcon />

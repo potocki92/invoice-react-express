@@ -1,15 +1,30 @@
 {
   "files": {
-    "main.css": "/static/css/main.fec2bff5.css",
-    "main.js": "/static/js/main.543bc9ca.js",
-    "static/js/787.c4e7f8f9.chunk.js": "/static/js/787.c4e7f8f9.chunk.js",
-    "index.html": "/index.html",
-    "main.fec2bff5.css.map": "/static/css/main.fec2bff5.css.map",
-    "main.543bc9ca.js.map": "/static/js/main.543bc9ca.js.map",
-    "787.c4e7f8f9.chunk.js.map": "/static/js/787.c4e7f8f9.chunk.js.map"
+    "main.css": "/invoice-react-express/static/css/main.e61fe5b4.css",
+    "main.js": "/invoice-react-express/static/js/main.ba943bd6.js",
+    "static/js/547.89ede78c.chunk.js": "/invoice-react-express/static/js/547.89ede78c.chunk.js",
+    "static/js/607.0da004df.chunk.js": "/invoice-react-express/static/js/607.0da004df.chunk.js",
+    "static/js/130.78295546.chunk.js": "/invoice-react-express/static/js/130.78295546.chunk.js",
+    "static/js/787.c4e7f8f9.chunk.js": "/invoice-react-express/static/js/787.c4e7f8f9.chunk.js",
+    "static/media/Placeholder.jpg": "/invoice-react-express/static/media/Placeholder.a9d2137fdec748ef3bd6.jpg",
+    "static/media/clients.svg": "/invoice-react-express/static/media/clients.f2416cfec7d13cb51cd1a39d1f7c6aac.svg",
+    "static/media/dashboard.svg": "/invoice-react-express/static/media/dashboard.c4224de972e11fd1d02250889a9514ce.svg",
+    "static/media/phone.svg": "/invoice-react-express/static/media/phone.04bf8fc739c8f7125652754aaa64caa0.svg",
+    "static/media/addInvoice.svg": "/invoice-react-express/static/media/addInvoice.48d8ad04db72e7a5592a00af0b3e1ccc.svg",
+    "static/media/user.svg": "/invoice-react-express/static/media/user.410a51fa0bf4a9ac27d38305e58db1d9.svg",
+    "index.html": "/invoice-react-express/index.html",
+    "static/media/logout.svg": "/invoice-react-express/static/media/logout.37db0b24c53f97b2ea48a711fe99cd69.svg",
+    "static/media/email.svg": "/invoice-react-express/static/media/email.ce050b331cfe2106dcb258aae212ffbe.svg",
+    "static/media/delete.svg": "/invoice-react-express/static/media/delete.9a0a603197dac44f4115fc81de26dbb4.svg",
+    "main.e61fe5b4.css.map": "/invoice-react-express/static/css/main.e61fe5b4.css.map",
+    "main.ba943bd6.js.map": "/invoice-react-express/static/js/main.ba943bd6.js.map",
+    "547.89ede78c.chunk.js.map": "/invoice-react-express/static/js/547.89ede78c.chunk.js.map",
+    "607.0da004df.chunk.js.map": "/invoice-react-express/static/js/607.0da004df.chunk.js.map",
+    "130.78295546.chunk.js.map": "/invoice-react-express/static/js/130.78295546.chunk.js.map",
+    "787.c4e7f8f9.chunk.js.map": "/invoice-react-express/static/js/787.c4e7f8f9.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.fec2bff5.css",
-    "static/js/main.543bc9ca.js"
+    "static/css/main.e61fe5b4.css",
+    "static/js/main.ba943bd6.js"
   ]
 }

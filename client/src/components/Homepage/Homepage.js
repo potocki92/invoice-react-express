@@ -8,15 +8,14 @@ import Sidebar from "../Sidebar/Sidebar";
 const Homepage = ({ setLoginUser, user }) => {
   let location = useLocation();
 
-
   const [items, setItems] = useState([]);
   return (
     <Fragment>
       <div className="homepage">
         <Sidebar />
-        {location.pathname === "/" && user._id ? (
+        {location.pathname === "/" && user && user._id ? ( // dodanie warunku user && user._id
           <div>
-            <h1>Hello, {user.username}!</h1>
+            <h1>Hello, {user.name}!</h1>
             <p>Your ID: {user._id}</p>
           </div>
         ) : (

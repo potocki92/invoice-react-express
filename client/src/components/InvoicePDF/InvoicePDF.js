@@ -31,12 +31,12 @@ const InvoicePDF = ({ invoice }) => {
           <Text className="fs-20 right">{invoice.invoiceNumber}</Text>
           <View className="flex flex-end flex-ai gap-15">
             <Text className="w-35 fs-11 text14">
-              Invoice Date: {invoice.date.invoiceDate}
+              Invoice Date: {invoice.date?.invoiceDate}
             </Text>
           </View>
           <View className="flex flex-end flex-ai gap-15">
             <Text className="w-35 fs-11 text14">
-              Due Date: {invoice.date.dueDate}
+              Due Date: {invoice.date?.dueDate}
             </Text>
           </View>
         </View>
@@ -44,27 +44,27 @@ const InvoicePDF = ({ invoice }) => {
       <View className="view flex m-t">
         <View className="view w-50 flex column">
           <Text className="fs-20 bold p-color">Your Company</Text>
-          <Text className="text14">{invoice.user.name}</Text>
-          <Text className="text14">{invoice.user.phone}</Text>
-          <Text className="text14">{invoice.user.email}</Text>
-          <Text className="text14">{invoice.user.NIP}</Text>
-          <Text className="text14">{invoice.user.REGON}</Text>
-          <Text className="text14">{invoice.user.address.street}</Text>
+          <Text className="text14">{invoice.user?.name}</Text>
+          <Text className="text14">{invoice.user?.phone}</Text>
+          <Text className="text14">{invoice.user?.email}</Text>
+          <Text className="text14">{invoice.user?.NIP}</Text>
+          <Text className="text14">{invoice.user?.REGON}</Text>
+          <Text className="text14">{invoice.user?.address.street}</Text>
           <Text className="text14">
-            {invoice.user.address.postalCode}, {invoice.user.address.city}
+            {invoice.user?.address.postalCode}, {invoice.user?.address.city}
           </Text>
         </View>
         <View className="view w-50 flex column">
           <Text className="fs-20 bold p-color">Bill to</Text>
-          <Text className="text14">{invoice.client.clientName}</Text>
-          <Text className="text14">{invoice.client.clientPhone}</Text>
-          <Text className="text14">{invoice.client.clientEmail}</Text>
-          <Text className="text14">{invoice.client.clientNip}</Text>
-          <Text className="text14">{invoice.client.clientRegon}</Text>
-          <Text className="text14">{invoice.client.clientAddress}</Text>
-          {invoice.client.clientPostal && invoice.client.clientCity && (
+          <Text className="text14">{invoice.client?.clientName}</Text>
+          <Text className="text14">{invoice.client?.clientPhone}</Text>
+          <Text className="text14">{invoice.client?.clientEmail}</Text>
+          <Text className="text14">{invoice.client?.clientNip}</Text>
+          <Text className="text14">{invoice.client?.clientRegon}</Text>
+          <Text className="text14">{invoice.client?.clientAddress}</Text>
+          {invoice.client?.clientPostal && invoice.client?.clientCity && (
             <Text className="text14">
-              {invoice.client.clientPostal}, {invoice.client.clientCity}
+              {invoice.client?.clientPostal}, {invoice.client?.clientCity}
             </Text>
           )}
         </View>
@@ -94,7 +94,7 @@ const InvoicePDF = ({ invoice }) => {
         </View>
       </View>
 
-      {invoice.products.items.map((product) => (
+      {invoice.products?.items.map((product) => (
         <View className="view row flex b-b p-10 flex-align relative">
           <View className="view w-25 p-4-8 flex-align flex">
             <Text className="">{product.productsName}</Text>
@@ -133,7 +133,7 @@ const InvoicePDF = ({ invoice }) => {
             </View>
             <View className="w-50 p-5">
               <Text class="span right bold dark">
-                {invoice.products.totalAmount}
+                {invoice.products?.totalAmount}
               </Text>
             </View>
           </View>

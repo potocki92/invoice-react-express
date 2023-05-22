@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from "../../utils/axiosConfig";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 
@@ -14,11 +14,20 @@ const User = () => {
   const [city, setCity] = useState("");
   const [postalCode, setPostalCode] = useState("");
   const [street, setStreet] = useState("");
-
+  const token = localStorage.getItem("token");
+  const getUserFromLocalStorage = localStorage.getItem("user");
+  const parsedUser = JSON.parse(getUserFromLocalStorage);
+  const userId = parsedUser.id;
+  
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const response = await axios.get(`/${id}/user`);
+        const response = await axios.get(`/user`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            UserId: userId,
+          },
+        });
         const user = response.data;
         setName(user.name);
         setEmail(user.email);
@@ -51,8 +60,13 @@ const User = () => {
           street,
         },
       };
-      console.log(updatedUser);
-      const response = await axios.put(`/${id}/user`, updatedUser);
+
+      const response = await axios.put(`/user`, updatedUser, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          UserId: userId,
+        },
+      });
       console.log("User updated successfully:", response.data);
       const userToSave = {
         _id: id,
@@ -88,7 +102,7 @@ const User = () => {
 
   return (
     <div className="container">
-      <Link to={`/${id}`}>
+      <Link to={`/`}>
         <button className="button back_button">Go Back</button>
       </Link>
       User {id}

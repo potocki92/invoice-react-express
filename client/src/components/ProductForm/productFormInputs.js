@@ -27,4 +27,4 @@ const productFormInput = (newProduct) => [
     required: true,
   },
 ];
-export { productFormInput };
+export default productFormInput;

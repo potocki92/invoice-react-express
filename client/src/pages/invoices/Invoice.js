@@ -1,7 +1,7 @@
 import { Types } from "mongoose";
 import { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
-import axios from "axios";
+import axios from "../../utils/axiosConfig";
 import CurrentMonthInvoices from "../currentMonthIvoices";
 import InvoicePDF from "../../components/InvoicePDF/InvoicePDF";
 import InvoiceInputs from "../../components/InvoiceInputs/InvoiceInputs";
@@ -37,6 +37,10 @@ const Invoices = () => {
       invoiceDate: new Date().toISOString().substring(0, 10),
     },
   });
+  const token = localStorage.getItem("token");
+  const getUserFromLocalStorage = localStorage.getItem("user");
+  const parsedUser = JSON.parse(getUserFromLocalStorage);
+  const userId = parsedUser.id;
   const [user, setUser] = useState({});
   const [currentMonthInvoices, setCurrentMonthInvoices] = useState(0);
   const [allInvoices, setAllInvoices] = useState([]);
@@ -71,7 +75,12 @@ const Invoices = () => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const response = await axios.get(`/${id}/user`);
+        const response = await axios.get(`/user`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            UserId: userId,
+          },
+        });
         setUser(response.data);
         setNewInvoice((prevInvoice) => ({
           ...prevInvoice,
@@ -90,7 +99,12 @@ const Invoices = () => {
   useEffect(() => {
     const fetchClients = async () => {
       try {
-        const response = await axios.get(`/${id}/clients`);
+        const response = await axios.get(`/clients`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            UserId: userId,
+          },
+        });
         setClients(response.data);
       } catch (error) {
         console.error(error);
@@ -105,7 +119,12 @@ const Invoices = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axios.get(`/${id}/products`);
+        const response = await axios.get(`/products`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            UserId: userId,
+          },
+        });
         setProducts(response.data);
       } catch (error) {
         console.error(error);
@@ -132,7 +151,12 @@ const Invoices = () => {
   useEffect(() => {
     const fetchInvoices = async () => {
       try {
-        const responseInvoice = await axios.get(`/${id}/invoices`);
+        const responseInvoice = await axios.get(`/invoices`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            UserId: userId,
+          },
+        });
         setAllInvoices(responseInvoice.data);
         setCurrentMonthInvoices(responseInvoice.data.length);
       } catch (error) {
@@ -152,7 +176,16 @@ const Invoices = () => {
   const handleClick = () => {
     if (isFormValid) {
       axios
-        .post(`/${id}/addInvoice`, { ...newInvoice, invoiceNumber })
+        .post(
+          `/addInvoice`,
+          { ...newInvoice, invoiceNumber },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              UserId: userId,
+            },
+          }
+        )
         .then((res) => {
           setAllInvoices([...allInvoices, newInvoice]); // aktualizujemy stan listy produktów
           setNewInvoice({
@@ -193,7 +226,7 @@ const Invoices = () => {
         <div className="invoice__home-logo">
           <h1>Invoice</h1>
           {allInvoices && <p>There are total {allInvoices.length} invoices</p>}
-          <Link to={`/${id}`}>
+          <Link to={`/`}>
             <button className="button back_button">Go Back</button>
           </Link>
         </div>
@@ -217,7 +250,7 @@ const Invoices = () => {
         />
       </div>
       <Link
-        to={`/${id}`}
+        to={`/`}
         // sprawdza czy wszystkie inputy zostały uzupełnione, jeżeli tak to link zadziała
         onClick={isFormValid ? null : (e) => e.preventDefault()}
       >

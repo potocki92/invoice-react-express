@@ -1,9 +1,9 @@
 import { Link } from "react-router-dom";
 import { Container, CardWrapper, ProductName } from "./InvoiceList.styled";
 
-export const InvoiceList = ({ id, invoices, onDelete }) => {
+const InvoiceList = ({ id, invoices, onDelete }) => {
   const reversedInvoices = [...invoices].reverse();
-  
+
   return (
     <Container>
       {reversedInvoices?.map((invoice, index) => (
@@ -26,7 +26,7 @@ export const InvoiceList = ({ id, invoices, onDelete }) => {
               {invoice.date.dueDate}
             </div>
           </ProductName>
-          <Link to={`/${id}/invoice/${invoice._id}`}>
+          <Link to={`/invoice/${invoice._id}`}>
             <button className="button">Edit</button>
           </Link>
           <button className="button" onClick={() => onDelete(invoice._id)}>
@@ -37,3 +37,5 @@ export const InvoiceList = ({ id, invoices, onDelete }) => {
     </Container>
   );
 };
+
+export default InvoiceList;

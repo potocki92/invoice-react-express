@@ -62,7 +62,7 @@ INVOICES
 // POST
 router.post("/:id/addInvoice", addInvoice);
 // GET
-router.get("/:id/invoices", getInvoice);
+router.get("/invoices", getInvoice);
 // GET
 router.get("/:id/invoice/:invoiceId", getEditInvoice);
 // DELETE

@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from "../../../utils/axiosConfig";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import InvoicePDF from "../../../components/InvoicePDF/InvoicePDF";
@@ -21,6 +21,10 @@ const InvoiceEdit = () => {
     },
     products: [],
   });
+  const token = localStorage.getItem("token");
+  const getUserFromLocalStorage = localStorage.getItem("user");
+  const parsedUser = JSON.parse(getUserFromLocalStorage);
+  const userId = parsedUser.id;
   const [products, setProducts] = useState([]);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [clients, setClients] = useState([]);
@@ -29,7 +33,12 @@ const InvoiceEdit = () => {
   useEffect(() => {
     const fetchInvoice = async () => {
       try {
-        const response = await axios.get(`/${id}/invoice/${invoiceId}`);
+        const response = await axios.get(`/invoice/${invoiceId}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            UserId: userId,
+          },
+        });
         setInvoice(response.data);
         setLoading(false);
       } catch (error) {
@@ -43,7 +52,12 @@ const InvoiceEdit = () => {
   useEffect(() => {
     const fetchClients = async () => {
       try {
-        const response = await axios.get(`/${id}/clients`);
+        const response = await axios.get(`/clients`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            UserId: userId,
+          },
+        });
         setClients(response.data);
       } catch (error) {
         console.error(error);
@@ -55,7 +69,12 @@ const InvoiceEdit = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axios.get(`/${id}/products`);
+        const response = await axios.get(`/products`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            UserId: userId,
+          },
+        });
         setProducts(response.data);
       } catch (error) {
         console.error(error);
@@ -113,7 +132,12 @@ const InvoiceEdit = () => {
   // Save all changed data
   const handleSave = async () => {
     try {
-      const response = await axios.put(`/${id}/invoice/${invoiceId}`, invoice);
+      const response = await axios.put(`/invoice/${invoiceId}`, invoice, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          UserId: userId,
+        },
+      });
       console.log(invoice);
       console.log("Invoice updated successfully: ", response);
     } catch (error) {
@@ -130,7 +154,7 @@ const InvoiceEdit = () => {
         <div className="invoice__home-logo">
           <h1>Edit Invoice {invoice._id}</h1>
           <p>Invoice number: {invoice.invoiceNumber}</p>
-          <Link to={`/${id}`}>
+          <Link to={`/`}>
             <button className="button back_button">Go Back</button>
           </Link>
         </div>

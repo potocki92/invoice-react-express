@@ -1,7 +1,7 @@
 import React from "react";
 import "./ProductForm.css";
 import InputField from "../InputField/InputField";
-import { productFormInput } from "./productFormInputs";
+import productFormInput from "./productFormInputs";
 
 /**
  * @class
@@ -89,4 +89,4 @@ class ProductForm extends React.Component {
   }
 }
 
-export { ProductForm };
+export default ProductForm;
