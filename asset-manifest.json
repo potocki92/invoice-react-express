@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/invoice-react-express/static/css/main.e61fe5b4.css",
-    "main.js": "/invoice-react-express/static/js/main.676f2175.js",
+    "main.js": "/invoice-react-express/static/js/main.316d7709.js",
     "static/js/547.89ede78c.chunk.js": "/invoice-react-express/static/js/547.89ede78c.chunk.js",
     "static/js/607.0da004df.chunk.js": "/invoice-react-express/static/js/607.0da004df.chunk.js",
     "static/js/130.14763f2c.chunk.js": "/invoice-react-express/static/js/130.14763f2c.chunk.js",
@@ -17,7 +17,7 @@
     "static/media/email.svg": "/invoice-react-express/static/media/email.ce050b331cfe2106dcb258aae212ffbe.svg",
     "static/media/delete.svg": "/invoice-react-express/static/media/delete.9a0a603197dac44f4115fc81de26dbb4.svg",
     "main.e61fe5b4.css.map": "/invoice-react-express/static/css/main.e61fe5b4.css.map",
-    "main.676f2175.js.map": "/invoice-react-express/static/js/main.676f2175.js.map",
+    "main.316d7709.js.map": "/invoice-react-express/static/js/main.316d7709.js.map",
     "547.89ede78c.chunk.js.map": "/invoice-react-express/static/js/547.89ede78c.chunk.js.map",
     "607.0da004df.chunk.js.map": "/invoice-react-express/static/js/607.0da004df.chunk.js.map",
     "130.14763f2c.chunk.js.map": "/invoice-react-express/static/js/130.14763f2c.chunk.js.map",
@@ -25,6 +25,6 @@
   },
   "entrypoints": [
     "static/css/main.e61fe5b4.css",
-    "static/js/main.676f2175.js"
+    "static/js/main.316d7709.js"
   ]
 }
